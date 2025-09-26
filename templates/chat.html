@@ -3,51 +3,656 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title or 'Haritha Chat' }}</title>
+  <title>ഹരിത ചാറ്റ്</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: "Poppins", Arial, sans-serif; background:
-      linear-gradient(160deg, #eafaf1 0%, #d7ffe9 30%, #b7f3d0 60%, #eafaf1 100%);
-      min-height: 100vh; display: flex; color: #0f3d2e; }
-    .container { width: 100%; display: grid; grid-template-columns: 280px 1fr; }
-    .sidebar { padding: 16px; background: rgba(21,85,60,0.08); border-right: 1px solid rgba(21,85,60,0.15); }
-    .brand { font-weight: 700; margin-bottom: 12px; }
-    .input { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(21,85,60,0.35); margin: 6px 0; }
-    .btn { padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(21,85,60,0.35); background: #fff; cursor: pointer; }
-    /* Animated toggle switch */
-    .switch { position: relative; display: inline-block; width: 56px; height: 30px; vertical-align: middle; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; inset: 0; background: #d1fae5; border: 1px solid rgba(21,85,60,0.35); transition: background 0.25s ease; border-radius: 999px; }
-    .slider:before { content: ""; position: absolute; height: 24px; width: 24px; left: 3px; top: 2px; background-color: #fff; border: 1px solid rgba(21,85,60,0.35); transition: transform 0.25s ease; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
-    input:checked + .slider { background: linear-gradient(135deg, #22c55e, #16a34a); }
-    input:checked + .slider:before { transform: translateX(26px); }
-    .main { display: flex; flex-direction: column; height: 100vh; }
-    .messages { flex: 1; overflow-y: auto; padding: 20px; }
-    .bubble { max-width: 900px; margin: 0 auto 12px auto; display: grid; grid-template-columns: 40px 1fr; gap: 10px; }
-    .avatar { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; }
-    .avatar.user { background: #22c55e; } .avatar.bot { background: #0ea5a0; }
-    .content { background: rgba(255,255,255,0.9); border: 1px solid rgba(21,85,60,0.15); border-radius: 12px; padding: 12px 14px; white-space: pre-wrap; }
-    .composer { position: sticky; bottom: 0; padding: 14px; display: flex; justify-content: center; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.9) 40%); }
-    .composer-inner { width: 100%; max-width: 900px; display: flex; gap: 8px; border: 1px solid rgba(21,85,60,0.2); border-radius: 14px; padding: 8px; background: rgba(255,255,255,0.9); }
-    textarea { flex: 1; border: none; outline: none; resize: none; background: transparent; padding: 10px; }
-    .send { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border: none; padding: 10px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+    
+    body { 
+      font-family: "Poppins", Arial, sans-serif; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh; 
+      display: flex; 
+      color: #2d3748;
+      overflow: hidden;
+    }
+    
+    .container { 
+      width: 100%; 
+      display: grid; 
+      grid-template-columns: 320px 1fr;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .sidebar { 
+      padding: 24px; 
+      background: linear-gradient(180deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border-right: 1px solid rgba(102, 126, 234, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .brand { 
+      font-weight: 800; 
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      padding: 20px 0;
+      border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+    }
+    
+    .language-toggle {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+    
+    .toggle-label {
+      color: #2d3748;
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+    }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 80px;
+      height: 40px;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      transition: 0.4s;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    
+    .slider-text {
+      color: white;
+      font-weight: 700;
+      font-size: 0.8rem;
+      transition: 0.4s;
+    }
+    
+    .switch input:checked + .slider {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+    
+    .switch input:checked + .slider .slider-text:first-child {
+      opacity: 0.5;
+    }
+    
+    .switch input:not(:checked) + .slider .slider-text:last-child {
+      opacity: 0.5;
+    }
+    
+    .chat-history {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(102, 126, 234, 0.1);
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .history-header {
+      color: #2d3748;
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .history-item {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+      position: relative;
+    }
+    
+    .history-item:hover {
+      background: rgba(102, 126, 234, 0.2);
+      border-color: rgba(102, 126, 234, 0.3);
+      transform: translateY(-1px);
+    }
+    
+    .history-item.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    
+    .history-item-title {
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .history-item-preview {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .history-item-date {
+      font-size: 0.7rem;
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+    
+    .history-item-delete {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(239, 68, 68, 0.8);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .history-item:hover .history-item-delete {
+      display: flex;
+    }
+    
+    .history-item-delete:hover {
+      background: rgba(239, 68, 68, 1);
+    }
+    
+    
+    .weather-widget {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 0 auto 16px auto;
+      max-width: 400px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .weather-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    
+    .weather-icon {
+      font-size: 1.5rem;
+    }
+    
+    .weather-location {
+      font-weight: 600;
+      color: #2d3748;
+    }
+    
+    .weather-close {
+      background: rgba(239, 68, 68, 0.1);
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      color: #ef4444;
+      font-size: 1rem;
+    }
+    
+    .weather-close:hover {
+      background: rgba(239, 68, 68, 0.2);
+    }
+    
+    .weather-main {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    
+    .weather-temp {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2d3748;
+    }
+    
+    .weather-condition {
+      color: #718096;
+      font-size: 0.9rem;
+    }
+    
+    .weather-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .weather-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: rgba(102, 126, 234, 0.05);
+      border-radius: 8px;
+    }
+    
+    .weather-label {
+      color: #718096;
+      font-size: 0.8rem;
+    }
+    
+    .weather-value {
+      color: #2d3748;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    
+    .weather-advice {
+      background: rgba(34, 197, 94, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      border-left: 4px solid #22c55e;
+    }
+    
+    .weather-advice-title {
+      font-weight: 600;
+      color: #15803d;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .weather-advice-item {
+      color: #166534;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+    
+    .insight-bubble {
+      background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+      border: 1px solid rgba(255, 193, 7, 0.3);
+    }
+    
+    .insight-header {
+      font-weight: 600;
+      color: #f57c00;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+    }
+    
+    .insight-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .insight-action {
+      background: rgba(255, 193, 7, 0.2);
+      border: 1px solid rgba(255, 193, 7, 0.4);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #e65100;
+    }
+    
+    .insight-action:hover {
+      background: rgba(255, 193, 7, 0.3);
+      transform: translateY(-1px);
+    }
+    
+    .btn { 
+      padding: 14px 18px; 
+      border-radius: 12px; 
+      border: none;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      cursor: pointer; 
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .main { 
+      display: flex; 
+      flex-direction: column; 
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.8);
+    }
+    
+    .messages { 
+      flex: 1; 
+      overflow-y: auto; 
+      padding: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+      position: relative;
+      z-index: 2;
+    }
+    
+    .bubble { 
+      max-width: 800px; 
+      margin: 0 auto 20px auto; 
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      animation: slideIn 0.3s ease-out;
+      position: relative;
+      z-index: 3;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .bubble.user {
+      flex-direction: row-reverse;
+    }
+    
+    .avatar { 
+      width: 48px; 
+      height: 48px; 
+      border-radius: 50%; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-weight: 700; 
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      flex-shrink: 0;
+    }
+    
+    .avatar.user { 
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+    
+    .avatar.bot { 
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+    
+    .content { 
+      background: rgba(255,255,255,0.95); 
+      border: 1px solid rgba(102, 126, 234, 0.1); 
+      border-radius: 18px; 
+      padding: 16px 20px; 
+      white-space: pre-wrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(10px);
+      max-width: 70%;
+      word-wrap: break-word;
+      color: #2d3748;
+      font-weight: 500;
+      line-height: 1.5;
+      position: relative;
+      z-index: 4;
+    }
+    
+    .bubble.user .content {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.15));
+      border-color: rgba(34, 197, 94, 0.3);
+      color: #1a202c;
+      font-weight: 600;
+    }
+    
+    /* Text selection styling */
+    .content ::selection {
+      background: rgba(102, 126, 234, 0.3);
+      color: #1a202c;
+    }
+    
+    .bubble.user .content ::selection {
+      background: rgba(34, 197, 94, 0.4);
+      color: #1a202c;
+    }
+    
+    .composer { 
+      position: sticky; 
+      bottom: 0; 
+      padding: 20px; 
+      display: flex; 
+      justify-content: center; 
+      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.95) 20%);
+      backdrop-filter: blur(20px);
+    }
+    
+    .composer-inner { 
+      width: 100%; 
+      max-width: 800px; 
+      display: flex; 
+      gap: 12px; 
+      border: 2px solid rgba(102, 126, 234, 0.2); 
+      border-radius: 25px; 
+      padding: 12px; 
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(20px);
+    }
+    
+    textarea { 
+      flex: 1; 
+      border: none; 
+      outline: none; 
+      resize: none; 
+      background: transparent; 
+      padding: 12px 16px;
+      font-size: 16px;
+      font-family: inherit;
+      color: #1a202c !important;
+      font-weight: 500;
+    }
+    
+    textarea::placeholder {
+      color: #718096;
+      opacity: 0.8;
+    }
+    
+    textarea:focus {
+      color: #1a202c !important;
+    }
+    
+    textarea::selection {
+      background: rgba(102, 126, 234, 0.3);
+      color: #1a202c;
+    }
+    
+    .send { 
+      background: linear-gradient(135deg, #667eea, #764ba2); 
+      color: #fff; 
+      border: none; 
+      padding: 12px 24px; 
+      border-radius: 20px; 
+      font-weight: 700; 
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    
+    .send:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    }
+    
+    .icon-btn {
+      background: rgba(102, 126, 234, 0.1);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 18px;
+    }
+    
+    .icon-btn:hover {
+      background: rgba(102, 126, 234, 0.2);
+      transform: scale(1.1);
+    }
+    
+    .icon-btn.recording {
+      background: rgba(239, 68, 68, 0.3) !important;
+      animation: pulse 1s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 18px;
+      margin: 0 auto 20px auto;
+      max-width: 800px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #667eea;
+      animation: typing 1.4s infinite ease-in-out;
+    }
+    
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+    
+    @keyframes typing {
+      0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+    
+    /* Scrollbar styling */
+    .messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .messages::-webkit-scrollbar-track {
+      background: rgba(102, 126, 234, 0.1);
+      border-radius: 3px;
+    }
+    
+    .messages::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 3px;
+    }
+    
+    .messages::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #5a67d8, #6b46c1);
+    }
+    
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+        height: 100vh;
+      }
+      
+      .sidebar {
+        display: none;
+      }
+      
+      .bubble {
+        max-width: 90%;
+      }
+      
+      .content {
+        max-width: 85%;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <aside class="sidebar">
       <div class="brand">Haritha Chat 🌿</div>
-      <div style="margin-top:8px; display:flex; align-items:center; justify-content: space-between; gap:10px;">
-        <div style="font-weight:600;">Malayalam</div>
-        <label class="switch" title="Toggle Malayalam">
-          <input id="langToggle" type="checkbox" />
-          <span class="slider"></span>
+      <div class="language-toggle">
+        <div class="toggle-label">Language</div>
+        <label class="switch">
+          <input type="checkbox" id="langToggle">
+          <span class="slider">
+            <span class="slider-text">EN</span>
+            <span class="slider-text">ML</span>
+          </span>
         </label>
       </div>
-      <button id="newChat" class="btn" style="margin-top:8px">+ New chat</button>
+      <button id="newChat" class="btn" data-en="New Chat" data-ml="പുതിയ ചാറ്റ്">New Chat</button>
+      
+      <div class="chat-history">
+        <div class="history-header" data-en="Chat History" data-ml="ചാറ്റ് ചരിത്രം">Chat History</div>
+        <div class="history-list" id="chatHistoryList">
+          <!-- Chat history items will be loaded here -->
+        </div>
+      </div>
+      
+      <a href="/dashboard" class="btn" data-en="Dashboard" data-ml="ഡാഷ്‌ബോർഡ്">📊 Dashboard</a>
+      <a href="/logout" class="btn" data-en="Logout" data-ml="പുറത്തുകടക്കുക">🚪 Logout</a>
     </aside>
 
     <div class="main">
@@ -57,13 +662,42 @@
           <div class="content">Namaskaram! I am your Haritha AI. Ask about crop planning, market prices, irrigation, or Kerala-specific best practices.</div>
         </div>
       </div>
+      
+      <!-- Weather Widget -->
+      <div class="weather-widget" id="weatherWidget" style="display: none;">
+        <div class="weather-header">
+          <span class="weather-icon">🌤️</span>
+          <span class="weather-location">Thrissur</span>
+          <button class="weather-close" onclick="hideWeatherWidget()">×</button>
+        </div>
+        <div class="weather-content">
+          <div class="weather-main">
+            <div class="weather-temp">28°C</div>
+            <div class="weather-condition">Partly Cloudy</div>
+          </div>
+          <div class="weather-details">
+            <div class="weather-item">
+              <span class="weather-label">Humidity</span>
+              <span class="weather-value">75%</span>
+            </div>
+            <div class="weather-item">
+              <span class="weather-label">Wind</span>
+              <span class="weather-value">12 km/h</span>
+            </div>
+          </div>
+          <div class="weather-advice" id="weatherAdvice">
+            <!-- Farming advice will be loaded here -->
+          </div>
+        </div>
+      </div>
+
       <div class="composer">
         <form class="composer-inner" id="composerForm">
-          <button type="button" id="micBtn" class="btn" title="Speak"><span id="micIcon">🎤</span></button>
+          <button type="button" id="micBtn" class="icon-btn" title="Voice input">🎤</button>
           <input type="file" id="imageInput" accept="image/*" multiple style="display:none" />
-          <button type="button" id="imageBtn" class="btn" title="Attach images">🖼️</button>
-          <textarea id="prompt" rows="1" placeholder="Message Haritha…"></textarea>
-          <button class="send" type="submit">Send</button>
+          <button type="button" id="imageBtn" class="icon-btn" title="Upload image">🖼️</button>
+          <textarea id="prompt" rows="1" placeholder="Message Haritha…" data-en="Message Haritha…" data-ml="ഹരിതയോട് സന്ദേശം അയയ്ക്കുക…"></textarea>
+          <button class="send" type="submit" data-en="Send" data-ml="അയയ്ക്കുക">Send</button>
         </form>
       </div>
       <div id="imagePreview" style="max-width:900px;margin:0 auto 10px auto;display:flex;gap:8px;flex-wrap:wrap;padding:0 14px"></div>
@@ -83,17 +717,291 @@
     const imageInput = document.getElementById('imageInput');
     const imageBtn = document.getElementById('imageBtn');
     const previewEl = document.getElementById('imagePreview');
+    
+    // Chat session management
+    let currentChatId = null;
+    let chatSessions = JSON.parse(localStorage.getItem('chatSessions') || '{}');
+    
 
     function getLang() {
-      return (langToggle && langToggle.checked) ? 'ml' : 'en';
+      return document.getElementById('langToggle').checked ? 'ml' : 'en';
+    }
+
+    function updateLanguage() {
+      const isMalayalam = document.getElementById('langToggle').checked;
+      const lang = isMalayalam ? 'ml' : 'en';
+      
+      // Update button texts
+      document.querySelectorAll('[data-en][data-ml]').forEach(element => {
+        element.textContent = element.getAttribute(`data-${lang}`);
+      });
+      
+      // Update placeholder
+      const prompt = document.getElementById('prompt');
+      prompt.placeholder = prompt.getAttribute(`data-${lang}`);
+      
+      // Update avatar texts
+      document.querySelectorAll('.avatar').forEach(avatar => {
+        if (avatar.textContent === 'നിങ്ങൾ' || avatar.textContent === 'You') {
+          avatar.textContent = isMalayalam ? 'നിങ്ങൾ' : 'You';
+        } else if (avatar.textContent === 'എഐ' || avatar.textContent === 'AI') {
+          avatar.textContent = isMalayalam ? 'എഐ' : 'AI';
+        }
+      });
+      
+      // Update welcome message if it's the first message
+      const firstMessage = document.querySelector('.bubble .content');
+      if (firstMessage && firstMessage.textContent.includes('Namaskaram')) {
+        firstMessage.textContent = isMalayalam 
+          ? 'നമസ്കാരം! ഞാൻ നിങ്ങളുടെ ഹരിത AI ആണ്. വിള ആസൂത്രണം, വിപണി വിലകൾ, ജലസേചനം, കേരളത്തിന് പ്രത്യേകമായ മികച്ച പരിശീലനങ്ങൾ എന്നിവയെക്കുറിച്ച് ചോദിക്കുക.'
+          : 'Namaskaram! I am your Haritha AI. Ask about crop planning, market prices, irrigation, or Kerala-specific best practices.';
+      }
+      
+    }
+
+    // Chat session management functions
+    function generateChatId() {
+      return 'chat_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    function saveChatSession() {
+      if (!currentChatId) return;
+      
+      const messages = Array.from(document.querySelectorAll('.bubble')).map(bubble => {
+        const avatar = bubble.querySelector('.avatar');
+        const content = bubble.querySelector('.content');
+        const role = avatar.textContent === 'You' || avatar.textContent === 'നിങ്ങൾ' ? 'user' : 'assistant';
+        return { role, content: content.textContent };
+      });
+
+      const firstUserMessage = messages.find(m => m.role === 'user');
+      const title = firstUserMessage ? 
+        (firstUserMessage.content.length > 30 ? 
+          firstUserMessage.content.substring(0, 30) + '...' : 
+          firstUserMessage.content) : 
+        'New Chat';
+
+      chatSessions[currentChatId] = {
+        id: currentChatId,
+        title: title,
+        messages: messages,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      localStorage.setItem('chatSessions', JSON.stringify(chatSessions));
+      loadChatHistory();
+    }
+
+    function loadChatHistory() {
+      const historyList = document.getElementById('chatHistoryList');
+      historyList.innerHTML = '';
+
+      const sessions = Object.values(chatSessions).sort((a, b) => 
+        new Date(b.updatedAt) - new Date(a.updatedAt)
+      );
+
+      sessions.forEach(session => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        if (session.id === currentChatId) {
+          item.classList.add('active');
+        }
+
+        const date = new Date(session.updatedAt);
+        const timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+        item.innerHTML = `
+          <div class="history-item-title">${session.title}</div>
+          <div class="history-item-preview">${session.messages.length} messages</div>
+          <div class="history-item-date">${timeStr}</div>
+          <button class="history-item-delete" onclick="deleteChatSession('${session.id}')">×</button>
+        `;
+
+        item.addEventListener('click', (e) => {
+          if (!e.target.classList.contains('history-item-delete')) {
+            loadChatSession(session.id);
+          }
+        });
+
+        historyList.appendChild(item);
+      });
+    }
+
+    function loadChatSession(chatId) {
+      const session = chatSessions[chatId];
+      if (!session) return;
+
+      currentChatId = chatId;
+      history.length = 0;
+      
+      // Clear current messages
+      const messagesEl = document.getElementById('messages');
+      messagesEl.innerHTML = '';
+
+      // Load session messages
+      session.messages.forEach(msg => {
+        appendMessage(msg.role, msg.content);
+        if (msg.role === 'user') {
+          history.push({ role: 'user', parts: [{ text: msg.content }] });
+        } else {
+          history.push({ role: 'model', parts: [{ text: msg.content }] });
+        }
+      });
+
+      loadChatHistory();
+    }
+
+    function deleteChatSession(chatId) {
+      if (confirm('Are you sure you want to delete this chat?')) {
+        delete chatSessions[chatId];
+        localStorage.setItem('chatSessions', JSON.stringify(chatSessions));
+        
+        if (currentChatId === chatId) {
+          startNewChat();
+        } else {
+          loadChatHistory();
+        }
+      }
+    }
+
+    function startNewChat() {
+      currentChatId = generateChatId();
+      history.length = 0;
+      const messagesEl = document.getElementById('messages');
+      messagesEl.innerHTML = '';
+      
+      const welcomeMsg = getLang() === 'ml' 
+        ? 'നമസ്കാരം! ഞാൻ നിങ്ങളുടെ ഹരിത AI ആണ്. വിള ആസൂത്രണം, വിപണി വിലകൾ, ജലസേചനം, കേരളത്തിന് പ്രത്യേകമായ മികച്ച പരിശീലനങ്ങൾ എന്നിവയെക്കുറിച്ച് ചോദിക്കുക.'
+        : 'Namaskaram! I am your Haritha AI. Ask about crop planning, market prices, irrigation, or Kerala-specific best practices.';
+      appendMessage('assistant', welcomeMsg);
+      
+      loadChatHistory();
+    }
+
+
+    // Weather widget functions
+    function showWeatherWidget() {
+      const widget = document.getElementById('weatherWidget');
+      widget.style.display = 'block';
+      
+      // Load weather data
+      fetch('/api/weather/Thrissur')
+        .then(response => response.json())
+        .then(data => {
+          updateWeatherWidget(data);
+        })
+        .catch(error => {
+          console.error('Weather fetch error:', error);
+        });
+    }
+
+    function hideWeatherWidget() {
+      document.getElementById('weatherWidget').style.display = 'none';
+    }
+
+    function updateWeatherWidget(weatherData) {
+      const widget = document.getElementById('weatherWidget');
+      const adviceContainer = document.getElementById('weatherAdvice');
+      
+      // Update basic weather info
+      widget.querySelector('.weather-temp').textContent = `${weatherData.temperature}°C`;
+      widget.querySelector('.weather-condition').textContent = weatherData.condition;
+      widget.querySelector('.weather-value').textContent = `${weatherData.humidity}%`;
+      
+      // Update farming advice
+      if (weatherData.farming_advice) {
+        let adviceHTML = '<div class="weather-advice-title">🌱 Farming Advice</div>';
+        Object.entries(weatherData.farming_advice).forEach(([key, value]) => {
+          adviceHTML += `<div class="weather-advice-item">• ${value}</div>`;
+        });
+        adviceContainer.innerHTML = adviceHTML;
+      }
+      
+      // Show alerts if any
+      if (weatherData.alerts && weatherData.alerts.length > 0) {
+        let alertsHTML = '<div class="weather-advice-title">⚠️ Weather Alerts</div>';
+        weatherData.alerts.forEach(alert => {
+          alertsHTML += `<div class="weather-advice-item">${alert.icon} ${alert.message}</div>`;
+        });
+        adviceContainer.innerHTML += alertsHTML;
+      }
+    }
+
+    // Insights and suggestions system
+    function showInsights(insights) {
+      const messagesEl = document.getElementById('messages');
+      const insightBubble = document.createElement('div');
+      insightBubble.className = 'bubble insight-bubble';
+      
+      let insightHTML = `
+        <div class="avatar bot">💡</div>
+        <div class="content">
+          <div class="insight-header">${insights.suggestion}</div>
+          <div class="insight-actions">
+      `;
+      
+      insights.quick_actions.forEach(action => {
+        insightHTML += `<button class="insight-action" onclick="handleInsightAction('${insights.type}', '${action}')">${action}</button>`;
+      });
+      
+      insightHTML += `
+          </div>
+        </div>
+      `;
+      
+      insightBubble.innerHTML = insightHTML;
+      messagesEl.appendChild(insightBubble);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function handleInsightAction(type, action) {
+      const lang = getLang();
+      let message = '';
+      
+      switch(type) {
+        case 'disease_help':
+          if (action.includes('common diseases')) {
+            message = lang === 'ml' ? 'എന്റെ വിളയുടെ സാധാരണ രോഗങ്ങൾ എന്താണ്?' : 'What are common diseases for my crop?';
+          } else if (action.includes('treatment')) {
+            message = lang === 'ml' ? 'രോഗത്തിനുള്ള ചികിത്സാ നിർദ്ദേശങ്ങൾ നൽകുക' : 'Give me treatment recommendations';
+          } else if (action.includes('prevention')) {
+            message = lang === 'ml' ? 'രോഗം തടയാനുള്ള നുറുങ്ങുകൾ നൽകുക' : 'Give me prevention tips';
+          }
+          break;
+        case 'weather_related':
+          if (action.includes('weather widget')) {
+            showWeatherWidget();
+            return;
+          } else if (action.includes('irrigation')) {
+            message = lang === 'ml' ? 'ജലസേചന നിർദ്ദേശങ്ങൾ നൽകുക' : 'Give me irrigation recommendations';
+          } else if (action.includes('planting')) {
+            message = lang === 'ml' ? 'നടാനുള്ള അനുയോജ്യമായ സമയം എന്താണ്?' : 'What is the best time to plant?';
+          }
+          break;
+        case 'market_related':
+          if (action.includes('market prices')) {
+            message = lang === 'ml' ? 'ഇന്നത്തെ വിപണി വിലകൾ എന്താണ്?' : 'What are today\'s market prices?';
+          } else if (action.includes('selling')) {
+            message = lang === 'ml' ? 'വിൽക്കാനുള്ള ഏറ്റവും നല്ല സമയം എന്താണ്?' : 'What is the best time to sell?';
+          } else if (action.includes('trends')) {
+            message = lang === 'ml' ? 'വിലയുടെ പ്രവണത എങ്ങനെയാണ്?' : 'What are the price trends?';
+          }
+          break;
+      }
+      
+      if (message) {
+        document.getElementById('prompt').value = message;
+        document.getElementById('composerForm').dispatchEvent(new Event('submit'));
+      }
     }
 
     function appendMessage(role, text) {
       const bubble = document.createElement('div');
-      bubble.className = 'bubble';
+      bubble.className = 'bubble ' + (role === 'user' ? 'user' : '');
       const avatar = document.createElement('div');
       avatar.className = 'avatar ' + (role === 'user' ? 'user' : 'bot');
-      avatar.textContent = role === 'user' ? 'You' : 'AI';
+      avatar.textContent = role === 'user' ? (getLang() === 'ml' ? 'നിങ്ങൾ' : 'You') : (getLang() === 'ml' ? 'എഐ' : 'AI');
       const content = document.createElement('div');
       content.className = 'content';
       content.textContent = text;
@@ -104,38 +1012,73 @@
       return content;
     }
 
+    function showTypingIndicator() {
+      const typingEl = document.createElement('div');
+      typingEl.className = 'typing-indicator';
+      typingEl.id = 'typing-indicator';
+      typingEl.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      `;
+      messagesEl.appendChild(typingEl);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+      const typingEl = document.getElementById('typing-indicator');
+      if (typingEl) {
+        typingEl.remove();
+      }
+    }
+
     newChatBtn.addEventListener('click', () => {
-      history.length = 0;
-      messagesEl.innerHTML = '';
-      appendMessage('assistant', 'New chat started. How can I help with your farm today?');
+      startNewChat();
     });
 
     formEl.addEventListener('submit', async (e) => {
       e.preventDefault();
       const text = promptEl.value.trim();
       if (!text) return;
+      
       appendMessage('user', text);
       promptEl.value = '';
+      showTypingIndicator();
+      
       const imagesPayload = await collectSelectedImages();
       clearPreview();
+      
       try {
         const resp = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: text, history, lang: getLang(), images: imagesPayload })
         });
+        
+        hideTypingIndicator();
+        
         if (!resp.ok) {
           const t = await resp.text();
-          appendMessage('assistant', `Error ${resp.status}: ${t}`);
+          appendMessage('assistant', `പിശക് ${resp.status}: ${t}`);
           return;
         }
+        
         const json = await resp.json();
-        const reply = json.reply || 'No content returned.';
+        const reply = json.reply || 'ഉള്ളടക്കം തിരികെ നൽകിയില്ല.';
         appendMessage('assistant', reply);
         history.push({ role: 'user', content: text });
         history.push({ role: 'assistant', content: reply });
+        
+        // Handle insights and suggestions
+        if (json.insights) {
+          showInsights(json.insights);
+        }
+        
+        // Save chat session after AI response
+        saveChatSession();
       } catch (err) {
-        appendMessage('assistant', 'Network error: ' + (err?.message || err));
+        hideTypingIndicator();
+        appendMessage('assistant', 'നെറ്റ്‌വർക്ക് പിശക്: ' + (err?.message || err));
       }
     });
 
@@ -145,38 +1088,82 @@
     let isRecording = false;
 
     async function startRecording() {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
-      chunks = [];
-      mediaRecorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) chunks.push(e.data); };
-      mediaRecorder.onstop = async () => {
-        const blob = new Blob(chunks, { type: 'audio/webm' });
-        const form = new FormData();
-        form.append('audio', blob, 'audio.webm');
-        form.append('lang', getLang());
-        try {
-          const resp = await fetch('/api/transcribe', { method: 'POST', body: form });
-          const j = await resp.json();
-          const txt = (j && j.transcript) ? String(j.transcript) : '';
-          if (txt) {
-            promptEl.value = txt;
-            promptEl.focus();
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+        chunks = [];
+        
+        mediaRecorder.ondataavailable = (e) => { 
+          if (e.data && e.data.size > 0) chunks.push(e.data); 
+        };
+        
+        mediaRecorder.onstop = async () => {
+          const blob = new Blob(chunks, { type: 'audio/webm' });
+          const form = new FormData();
+          form.append('audio', blob, 'audio.webm');
+          form.append('lang', getLang());
+          
+          try {
+            const resp = await fetch('/api/transcribe', { method: 'POST', body: form });
+            const j = await resp.json();
+            const txt = (j && j.transcript) ? String(j.transcript) : '';
+            
+            if (txt) {
+              promptEl.value = txt;
+              promptEl.focus();
+              // Auto-submit the transcribed text
+              setTimeout(() => {
+                formEl.dispatchEvent(new Event('submit'));
+              }, 500);
+            } else {
+              const noTextMsg = getLang() === 'ml' 
+                ? 'ശബ്ദം തിരിച്ചറിയാൻ കഴിഞ്ഞില്ല. വീണ്ടും ശ്രമിക്കുക.'
+                : 'Could not recognize speech. Please try again.';
+              appendMessage('assistant', noTextMsg);
+            }
+          } catch (e) {
+            const errorMsg = getLang() === 'ml' 
+              ? 'ട്രാൻസ്ക്രിപ്ഷൻ പിശക്: ' + (e?.message || e)
+              : 'Transcription error: ' + (e?.message || e);
+            appendMessage('assistant', errorMsg);
+          } finally {
+            isRecording = false;
+            micBtn.textContent = '🎤';
+            micBtn.classList.remove('recording');
+            // Stop all tracks to release microphone
+            stream.getTracks().forEach(track => track.stop());
           }
-        } catch (e) {
-          appendMessage('assistant', 'Transcription error: ' + (e?.message || e));
-        } finally {
-          isRecording = false;
-          micIcon.textContent = '🎤';
-        }
-      };
-      mediaRecorder.start();
-      isRecording = true;
-      micIcon.textContent = '⏺️';
+        };
+        
+        mediaRecorder.start();
+        isRecording = true;
+        micBtn.textContent = '⏹️';
+        micBtn.classList.add('recording');
+        
+        // Show recording indicator
+        const recordingMsg = getLang() === 'ml' 
+          ? 'റെക്കോർഡിംഗ് ആരംഭിച്ചു... സംസാരിക്കുക'
+          : 'Recording started... Please speak';
+        appendMessage('assistant', recordingMsg);
+        
+      } catch (error) {
+        const errorMsg = getLang() === 'ml' 
+          ? 'മൈക്രോഫോൺ ആക്സസ് നിരസിച്ചു. ദയവായി മൈക്രോഫോൺ പെർമിഷൻ നൽകുക.'
+          : 'Microphone access denied. Please allow microphone permission.';
+        appendMessage('assistant', errorMsg);
+        isRecording = false;
+        micBtn.textContent = '🎤';
+        micBtn.classList.remove('recording');
+      }
     }
 
     function stopRecording() {
       if (mediaRecorder && isRecording) {
         mediaRecorder.stop();
+        const stopMsg = getLang() === 'ml' 
+          ? 'റെക്കോർഡിംഗ് നിർത്തി... പ്രോസസ്സിംഗ്'
+          : 'Recording stopped... Processing';
+        appendMessage('assistant', stopMsg);
       }
     }
 
@@ -188,7 +1175,10 @@
           stopRecording();
         }
       } catch (e) {
-        appendMessage('assistant', 'Microphone error: ' + (e?.message || e));
+        const errorMsg = getLang() === 'ml' 
+          ? 'മൈക്രോഫോൺ പിശക്: ' + (e?.message || e)
+          : 'Microphone error: ' + (e?.message || e);
+        appendMessage('assistant', errorMsg);
       }
     });
 
@@ -239,6 +1229,86 @@
         reader.readAsDataURL(file);
       });
     }
+
+    // Auto-resize textarea
+    promptEl.addEventListener('input', () => {
+      promptEl.style.height = 'auto';
+      promptEl.style.height = Math.min(promptEl.scrollHeight, 120) + 'px';
+    });
+
+    // Add smooth scrolling and better UX
+    function scrollToBottom() {
+      messagesEl.scrollTo({
+        top: messagesEl.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+
+    // Enhanced message handling with better animations
+    function addMessageWithAnimation(role, text) {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble ' + (role === 'user' ? 'user' : '');
+      bubble.style.opacity = '0';
+      bubble.style.transform = 'translateY(20px)';
+      
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar ' + (role === 'user' ? 'user' : 'bot');
+      avatar.textContent = role === 'user' ? (getLang() === 'ml' ? 'നിങ്ങൾ' : 'You') : (getLang() === 'ml' ? 'എഐ' : 'AI');
+      
+      const content = document.createElement('div');
+      content.className = 'content';
+      content.textContent = text;
+      
+      bubble.appendChild(avatar);
+      bubble.appendChild(content);
+      messagesEl.appendChild(bubble);
+      
+      // Animate in
+      setTimeout(() => {
+        bubble.style.transition = 'all 0.3s ease-out';
+        bubble.style.opacity = '1';
+        bubble.style.transform = 'translateY(0)';
+      }, 10);
+      
+      scrollToBottom();
+      return content;
+    }
+
+    // Replace appendMessage with enhanced version
+    const originalAppendMessage = appendMessage;
+    appendMessage = addMessageWithAnimation;
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        formEl.dispatchEvent(new Event('submit'));
+      }
+    });
+
+    // Add focus management
+    promptEl.addEventListener('focus', () => {
+      promptEl.style.borderColor = '#667eea';
+    });
+
+    promptEl.addEventListener('blur', () => {
+      promptEl.style.borderColor = 'transparent';
+    });
+
+    // Language toggle functionality
+    document.getElementById('langToggle').addEventListener('change', updateLanguage);
+
+    // Initialize with English (default) - ensure toggle is off
+    document.getElementById('langToggle').checked = false;
+    updateLanguage();
+    
+    // Initialize chat session
+    if (!currentChatId) {
+      startNewChat();
+    } else {
+      loadChatHistory();
+    }
+    
   </script>
 </body>
 </html>

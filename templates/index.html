@@ -233,6 +233,24 @@
       font-weight: 600;
     }
 
+    .flash-message {
+      background: rgba(46, 159, 79, 0.1);
+      border: 1px solid rgba(46, 159, 79, 0.3);
+      color: var(--green-dark);
+    }
+
+    .flash-message.error {
+      background: rgba(220, 38, 38, 0.1);
+      border: 1px solid rgba(220, 38, 38, 0.3);
+      color: #dc2626;
+    }
+
+    .flash-message.success {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #22c55e;
+    }
+
     @media (max-width: 880px) {
       .content { grid-template-columns: 1fr; }
       .hero { border-right: none; }
@@ -263,6 +281,16 @@
         <p class="notice" id="noticeText">By continuing, you agree to our Terms and Privacy Policy.</p>
       </div>
       <div class="forms">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}" style="padding: 10px; margin-bottom: 15px; border-radius: 8px; text-align: center; font-weight: 500;">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        
         <div class="tabs" role="tablist">
           <button id="tabLogin" class="tab-btn active" role="tab" aria-selected="true">Login</button>
           <button id="tabSignup" class="tab-btn" role="tab" aria-selected="false">Create Account</button>
@@ -478,24 +506,65 @@
       setLang(next);
     });
 
-    // Demo-only submit handlers
+    // Form submit handlers
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const phone = qs('#loginPhone').value.trim();
-      const pwd = qs('#loginPassword').value;
-      if (!/^[0-9]{10}$/.test(phone)) { alert('Enter a valid 10-digit phone number'); return; }
-      if (pwd.length < 6) { alert('Password must be at least 6 characters'); return; }
-      alert('Logged in (demo)');
-      window.location.href = 'dashboard.html';
+      const formData = new FormData(loginForm);
+      
+      fetch('/login', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.redirected) {
+          window.location.href = response.url;
+        } else {
+          return response.text();
+        }
+      })
+      .then(html => {
+        if (html) {
+          // Handle error messages
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const errorMsg = doc.querySelector('.error');
+          if (errorMsg) {
+            alert(errorMsg.textContent);
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Login failed. Please try again.');
+      });
     });
 
     signupForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const pw = qs('#password').value;
-      const cf = qs('#confirm').value;
-      if (pw !== cf) { alert('Passwords do not match'); return; }
-      alert('Account created (demo)');
-      showLogin();
+      const formData = new FormData(signupForm);
+      
+      fetch('/register', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const successMsg = doc.querySelector('.success');
+        const errorMsg = doc.querySelector('.error');
+        
+        if (successMsg) {
+          alert(successMsg.textContent);
+          showLogin();
+        } else if (errorMsg) {
+          alert(errorMsg.textContent);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Registration failed. Please try again.');
+      });
     });
   </script>
 </body>
