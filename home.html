@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Haritha Kerala</title>
+  <title>Krishi Sakhi - The Farmers Companion</title>
   <style>
     * {
       margin: 0;
@@ -41,6 +41,16 @@
       align-items: center;
       gap: 10px;
       color: #f5fff8;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      padding: 8px 16px;
+      backdrop-filter: blur(5px);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .profile:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
     }
 
     .pfp {
@@ -55,11 +65,70 @@
       font-weight: 800;
       letter-spacing: 0.5px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .pfp:hover {
+      transform: scale(1.05);
+    }
+
+    .pfp img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .pfp input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .change-photo {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 2px;
+      font-size: 0.6rem;
+      transform: translateY(100%);
+      transition: transform 0.2s ease;
+    }
+
+    .pfp:hover .change-photo {
+      transform: translateY(0);
     }
 
     .profile .name {
       font-weight: 700;
       font-size: 0.95rem;
+    }
+
+    .name-button {
+      background: none;
+      border: none;
+      color: #f5fff8;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      padding: 0;
+      font-family: inherit;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .name-button:hover {
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
     }
 
     .nav {
@@ -115,7 +184,7 @@
 
     .button-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 14px;
     }
 
@@ -183,19 +252,120 @@
     document.addEventListener('DOMContentLoaded', function() {
       const root = document.documentElement;
       root.style.setProperty('--loaded', '1');
+      
+      // Load user name from localStorage
+      loadUserName();
+      
+      // Load profile picture
+      loadProfilePicture();
+      
+      // Setup profile picture change functionality
+      setupProfilePictureChange();
+    });
+
+    function loadUserName() {
+      const userData = JSON.parse(localStorage.getItem('userData')) || {};
+      const nameButton = document.getElementById('nameButton');
+      
+      if (userData.name) {
+        // Extract first name from full name
+        const firstName = userData.name.split(' ')[0];
+        nameButton.textContent = firstName;
+      } else {
+        // Default name if no data found
+        nameButton.textContent = 'Anand';
+      }
+    }
+
+    function loadProfilePicture() {
+      const profileImage = document.getElementById('profileImage');
+      const profileInitial = document.getElementById('profileInitial');
+      const savedImage = localStorage.getItem('profileImage');
+      
+      if (savedImage) {
+        profileImage.src = savedImage;
+        profileImage.style.display = 'block';
+        profileInitial.style.display = 'none';
+      } else {
+        // Set initial based on name
+        const userData = JSON.parse(localStorage.getItem('userData')) || {};
+        const name = userData.name || 'Anand';
+        profileInitial.textContent = name.charAt(0).toUpperCase();
+      }
+    }
+
+    function setupProfilePictureChange() {
+      const profilePic = document.getElementById('profilePic');
+      const profileImage = document.getElementById('profileImage');
+      const profileInitial = document.getElementById('profileInitial');
+      const photoInput = document.getElementById('photoInput');
+
+      profilePic.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent navigation to dashboard
+        photoInput.click();
+      });
+
+      photoInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            profileImage.src = e.target.result;
+            profileImage.style.display = 'block';
+            profileInitial.style.display = 'none';
+            localStorage.setItem('profileImage', e.target.result);
+            
+            // Trigger storage event to notify dashboard
+            window.dispatchEvent(new StorageEvent('storage', {
+              key: 'profileImage',
+              newValue: e.target.result,
+              oldValue: localStorage.getItem('profileImage')
+            }));
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    // Listen for storage changes to update name and profile picture when edited in dashboard
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'userData' && e.newValue) {
+        const userData = JSON.parse(e.newValue);
+        const nameButton = document.getElementById('nameButton');
+        
+        if (userData.name) {
+          // Extract first name from full name
+          const firstName = userData.name.split(' ')[0];
+          nameButton.textContent = firstName;
+        }
+      }
+      
+      if (e.key === 'profileImage' && e.newValue) {
+        const profileImage = document.getElementById('profileImage');
+        const profileInitial = document.getElementById('profileInitial');
+        
+        profileImage.src = e.newValue;
+        profileImage.style.display = 'block';
+        profileInitial.style.display = 'none';
+      }
     });
   </script>
   <style>
     body { font-family: "Poppins", Arial, sans-serif; }
   </style>
-  <meta name="description" content="Haritha Kerala - AI Assistant, Market Prices, Activity Tracker with a Kerala warmth theme.">
+  <meta name="description" content="Krishi Sakhi - The Farmers Companion. AI Assistant, Activity Tracker with a Kerala warmth theme.">
 </head>
 <body>
   <header class="topbar" id="home">
     <a href="dashboard.html" style="text-decoration: none; color: inherit;">
       <div class="profile" style="cursor: pointer;">
-        <div class="pfp" aria-hidden="true">A</div>
-        <div class="name" title="Profile name">Anand</div>
+        <div class="pfp" id="profilePic">
+          <div id="profileInitial">A</div>
+          <img id="profileImage" style="display: none;" alt="Profile Picture">
+          <input type="file" id="photoInput" accept="image/*" style="display: none;">
+          <div class="change-photo">Change Photo</div>
+        </div>
+        <button class="name-button" id="nameButton" title="Go to Dashboard">Anand</button>
       </div>
     </a>
     <nav class="nav" aria-label="Primary">
@@ -207,20 +377,14 @@
 
   <main>
     <div class="card" role="region" aria-label="Main options">
-      <h1>Haritha Kerala</h1>
+      <h1>Krishi Sakhi - The Farmers Companion</h1>
       <p>Experience the warmth of Kerala — backwaters, coconut groves, and lush farms.</p>
       <div class="button-grid">
         <a class="btn" href="http://127.0.0.1:5000" title="Open AI Assistant">AI Assistant</a>
-        <a class="btn" href="#market" title="View Market Prices">Market Price</a>
         <a class="btn" href="#activity" title="Open Activity Tracker">Activity Tracker</a>
       </div>
     </div>
   </main>
-
-  <section id="market">
-    <div class="section-title">Market Prices</div>
-    <div class="section-sub">Coming soon: Real-time prices for spices, coconuts, and produce.</div>
-  </section>
 
   <section id="activity">
     <div class="section-title">Activity Tracker</div>
