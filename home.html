@@ -62,6 +62,23 @@
       font-size: 0.95rem;
     }
 
+    .name-button {
+      background: none;
+      border: none;
+      color: #f5fff8;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      padding: 0;
+      font-family: inherit;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .name-button:hover {
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    }
+
     .nav {
       display: flex;
       gap: 14px;
@@ -183,6 +200,37 @@
     document.addEventListener('DOMContentLoaded', function() {
       const root = document.documentElement;
       root.style.setProperty('--loaded', '1');
+      
+      // Load user name from localStorage
+      loadUserName();
+    });
+
+    function loadUserName() {
+      const userData = JSON.parse(localStorage.getItem('userData')) || {};
+      const nameButton = document.getElementById('nameButton');
+      
+      if (userData.name) {
+        // Extract first name from full name
+        const firstName = userData.name.split(' ')[0];
+        nameButton.textContent = firstName;
+      } else {
+        // Default name if no data found
+        nameButton.textContent = 'Anand';
+      }
+    }
+
+    // Listen for storage changes to update name when edited in dashboard
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'userData' && e.newValue) {
+        const userData = JSON.parse(e.newValue);
+        const nameButton = document.getElementById('nameButton');
+        
+        if (userData.name) {
+          // Extract first name from full name
+          const firstName = userData.name.split(' ')[0];
+          nameButton.textContent = firstName;
+        }
+      }
     });
   </script>
   <style>
@@ -195,7 +243,7 @@
     <a href="dashboard.html" style="text-decoration: none; color: inherit;">
       <div class="profile" style="cursor: pointer;">
         <div class="pfp" aria-hidden="true">A</div>
-        <div class="name" title="Profile name">Anand</div>
+        <button class="name-button" id="nameButton" title="Go to Dashboard">Anand</button>
       </div>
     </a>
     <nav class="nav" aria-label="Primary">

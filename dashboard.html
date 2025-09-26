@@ -1250,6 +1250,13 @@
       // Save to localStorage
       localStorage.setItem('userData', JSON.stringify(userData));
       
+      // Trigger storage event to notify other pages
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'userData',
+        newValue: JSON.stringify(userData),
+        oldValue: localStorage.getItem('userData')
+      }));
+      
       // Update display
       loadUserData();
       
