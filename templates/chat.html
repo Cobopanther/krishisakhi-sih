@@ -38,17 +38,481 @@
       gap: 20px;
     }
     
-    .brand { 
-      font-weight: 800; 
-      font-size: 1.5rem;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-align: center;
-      padding: 20px 0;
-      border-bottom: 2px solid rgba(102, 126, 234, 0.1);
-    }
+     .brand { 
+       font-weight: 800; 
+       font-size: 1.5rem;
+       background: linear-gradient(135deg, #667eea, #764ba2);
+       -webkit-background-clip: text;
+       -webkit-text-fill-color: transparent;
+       background-clip: text;
+       text-align: center;
+       padding: 20px 0;
+       border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+     }
+     
+     .profile-section {
+       background: rgba(255, 255, 255, 0.1);
+       border-radius: 16px;
+       padding: 20px;
+       margin-bottom: 20px;
+       backdrop-filter: blur(10px);
+       border: 1px solid rgba(102, 126, 234, 0.2);
+       text-align: center;
+     }
+     
+     .profile-avatar {
+       width: 80px;
+       height: 80px;
+       border-radius: 50%;
+       background: linear-gradient(135deg, #22c55e, #16a34a);
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       font-size: 2rem;
+       color: white;
+       margin: 0 auto 12px auto;
+       box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+       border: 3px solid rgba(255, 255, 255, 0.2);
+     }
+     
+     .profile-name {
+       font-weight: 700;
+       font-size: 1.1rem;
+       color: #2d3748;
+       margin-bottom: 4px;
+     }
+     
+     .profile-role {
+       font-size: 0.85rem;
+       color: #718096;
+       margin-bottom: 12px;
+     }
+     
+     .profile-stats {
+       display: grid;
+       grid-template-columns: 1fr 1fr;
+       gap: 8px;
+       margin-top: 12px;
+     }
+     
+     .stat-item {
+       background: rgba(102, 126, 234, 0.1);
+       border-radius: 8px;
+       padding: 8px;
+       text-align: center;
+     }
+     
+     .stat-value {
+       font-weight: 700;
+       font-size: 0.9rem;
+       color: #2d3748;
+     }
+     
+     .stat-label {
+       font-size: 0.7rem;
+       color: #718096;
+       margin-top: 2px;
+     }
+     
+     .profile-actions {
+       display: flex;
+       gap: 8px;
+       margin-top: 12px;
+     }
+     
+     .profile-btn {
+       flex: 1;
+       background: rgba(102, 126, 234, 0.1);
+       border: 1px solid rgba(102, 126, 234, 0.2);
+       border-radius: 8px;
+       padding: 8px;
+       font-size: 0.8rem;
+       color: #2d3748;
+       cursor: pointer;
+       transition: all 0.3s ease;
+     }
+     
+     .profile-btn:hover {
+       background: rgba(102, 126, 234, 0.2);
+       transform: translateY(-1px);
+     }
+     
+     .profile-section {
+       cursor: pointer;
+       transition: all 0.3s ease;
+     }
+     
+     .profile-section:hover {
+       background: rgba(255, 255, 255, 0.15);
+       transform: translateY(-2px);
+       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+     }
+     
+     /* Profile Modal */
+     .profile-modal {
+       position: fixed;
+       top: 0;
+       left: 0;
+       right: 0;
+       bottom: 0;
+       background: rgba(0, 0, 0, 0.7);
+       backdrop-filter: blur(10px);
+       z-index: 1000;
+       display: none;
+       align-items: center;
+       justify-content: center;
+       padding: 20px;
+     }
+     
+     .profile-modal-content {
+       background: rgba(255, 255, 255, 0.95);
+       border-radius: 20px;
+       padding: 30px;
+       max-width: 500px;
+       width: 100%;
+       max-height: 80vh;
+       overflow-y: auto;
+       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+       backdrop-filter: blur(20px);
+       border: 1px solid rgba(255, 255, 255, 0.2);
+     }
+     
+     .profile-modal-header {
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       margin-bottom: 25px;
+       padding-bottom: 15px;
+       border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+     }
+     
+     .profile-modal-title {
+       font-size: 1.5rem;
+       font-weight: 700;
+       color: #2d3748;
+       display: flex;
+       align-items: center;
+       gap: 10px;
+     }
+     
+     .profile-modal-close {
+       background: rgba(239, 68, 68, 0.1);
+       border: none;
+       border-radius: 50%;
+       width: 35px;
+       height: 35px;
+       cursor: pointer;
+       color: #ef4444;
+       font-size: 1.2rem;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: all 0.3s ease;
+     }
+     
+     .profile-modal-close:hover {
+       background: rgba(239, 68, 68, 0.2);
+       transform: scale(1.1);
+     }
+     
+     .profile-modal-avatar {
+       width: 120px;
+       height: 120px;
+       border-radius: 50%;
+       background: linear-gradient(135deg, #22c55e, #16a34a);
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       font-size: 3rem;
+       color: white;
+       margin: 0 auto 20px auto;
+       box-shadow: 0 12px 30px rgba(34, 197, 94, 0.3);
+       border: 4px solid rgba(255, 255, 255, 0.3);
+     }
+     
+     .profile-modal-info {
+       text-align: center;
+       margin-bottom: 25px;
+     }
+     
+     .profile-modal-name {
+       font-size: 1.4rem;
+       font-weight: 700;
+       color: #2d3748;
+       margin-bottom: 8px;
+     }
+     
+     .profile-modal-role {
+       font-size: 1rem;
+       color: #718096;
+       margin-bottom: 15px;
+     }
+     
+     .profile-modal-stats {
+       display: grid;
+       grid-template-columns: 1fr 1fr 1fr;
+       gap: 15px;
+       margin-bottom: 25px;
+     }
+     
+     .profile-modal-stat {
+       background: rgba(102, 126, 234, 0.1);
+       border-radius: 12px;
+       padding: 15px;
+       text-align: center;
+       border: 1px solid rgba(102, 126, 234, 0.2);
+     }
+     
+     .profile-modal-stat-value {
+       font-size: 1.2rem;
+       font-weight: 700;
+       color: #2d3748;
+       margin-bottom: 5px;
+     }
+     
+     .profile-modal-stat-label {
+       font-size: 0.8rem;
+       color: #718096;
+     }
+     
+     .profile-modal-achievements {
+       margin-bottom: 25px;
+     }
+     
+     .profile-modal-section-title {
+       font-size: 1.1rem;
+       font-weight: 600;
+       color: #2d3748;
+       margin-bottom: 15px;
+       display: flex;
+       align-items: center;
+       gap: 8px;
+     }
+     
+     .achievement-item {
+       display: flex;
+       align-items: center;
+       gap: 12px;
+       padding: 12px;
+       background: rgba(255, 255, 255, 0.5);
+       border-radius: 10px;
+       margin-bottom: 8px;
+       border: 1px solid rgba(102, 126, 234, 0.1);
+     }
+     
+     .achievement-icon {
+       font-size: 1.5rem;
+     }
+     
+     .achievement-text {
+       flex: 1;
+     }
+     
+     .achievement-title {
+       font-weight: 600;
+       color: #2d3748;
+       font-size: 0.9rem;
+     }
+     
+     .achievement-desc {
+       font-size: 0.8rem;
+       color: #718096;
+     }
+     
+     .achievement-status {
+       font-size: 0.8rem;
+       padding: 4px 8px;
+       border-radius: 6px;
+       font-weight: 600;
+     }
+     
+     .achievement-unlocked {
+       background: rgba(34, 197, 94, 0.1);
+       color: #15803d;
+     }
+     
+     .achievement-locked {
+       background: rgba(156, 163, 175, 0.1);
+       color: #6b7280;
+     }
+     
+     .profile-modal-actions {
+       display: flex;
+       gap: 12px;
+     }
+     
+     .profile-modal-btn {
+       flex: 1;
+       padding: 12px 20px;
+       border: none;
+       border-radius: 10px;
+       font-weight: 600;
+       cursor: pointer;
+       transition: all 0.3s ease;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       gap: 8px;
+     }
+     
+     .profile-modal-btn-primary {
+       background: linear-gradient(135deg, #667eea, #764ba2);
+       color: white;
+       box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+     }
+     
+     .profile-modal-btn-primary:hover {
+       transform: translateY(-2px);
+       box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+     }
+     
+     .profile-modal-btn-secondary {
+       background: rgba(102, 126, 234, 0.1);
+       color: #2d3748;
+       border: 1px solid rgba(102, 126, 234, 0.2);
+     }
+     
+     .profile-modal-btn-secondary:hover {
+       background: rgba(102, 126, 234, 0.2);
+       transform: translateY(-1px);
+     }
+     
+     /* Profile Edit Form */
+     .profile-edit-form {
+       margin-top: 20px;
+     }
+     
+     .profile-edit-form .form-group,
+     .profile-edit-form .form-actions {
+       display: none;
+     }
+     
+     .profile-edit-form.active .form-group,
+     .profile-edit-form.active .form-actions {
+       display: block;
+     }
+     
+     .form-group {
+       margin-bottom: 15px;
+     }
+     
+     .form-label {
+       display: block;
+       font-weight: 600;
+       color: #2d3748;
+       margin-bottom: 5px;
+       font-size: 0.9rem;
+     }
+     
+     .form-input {
+       width: 100%;
+       padding: 10px 12px;
+       border: 1px solid rgba(102, 126, 234, 0.2);
+       border-radius: 8px;
+       background: rgba(255, 255, 255, 0.8);
+       color: #2d3748;
+       font-size: 0.9rem;
+       transition: all 0.3s ease;
+     }
+     
+     .form-input:focus {
+       outline: none;
+       border-color: #667eea;
+       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+     }
+     
+     .form-row {
+       display: grid;
+       grid-template-columns: 1fr 1fr;
+       gap: 12px;
+     }
+     
+     .profile-info-section {
+       background: rgba(102, 126, 234, 0.05);
+       border-radius: 12px;
+       padding: 15px;
+       margin-bottom: 20px;
+       border: 1px solid rgba(102, 126, 234, 0.1);
+     }
+     
+     .info-item {
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       padding: 8px 0;
+       border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+     }
+     
+     .info-item:last-child {
+       border-bottom: none;
+     }
+     
+     .info-label {
+       font-weight: 600;
+       color: #2d3748;
+       font-size: 0.9rem;
+     }
+     
+     .info-value {
+       color: #718096;
+       font-size: 0.9rem;
+       text-align: right;
+       max-width: 60%;
+       word-break: break-word;
+     }
+     
+     .edit-toggle-btn {
+       background: rgba(102, 126, 234, 0.1);
+       border: 1px solid rgba(102, 126, 234, 0.2);
+       border-radius: 8px;
+       padding: 8px 12px;
+       font-size: 0.8rem;
+       color: #2d3748;
+       cursor: pointer;
+       transition: all 0.3s ease;
+       margin-bottom: 15px;
+     }
+     
+     .edit-toggle-btn:hover {
+       background: rgba(102, 126, 234, 0.2);
+     }
+     
+     .form-actions {
+       display: flex;
+       gap: 10px;
+       margin-top: 20px;
+     }
+     
+     .form-btn {
+       flex: 1;
+       padding: 10px 15px;
+       border: none;
+       border-radius: 8px;
+       font-weight: 600;
+       cursor: pointer;
+       transition: all 0.3s ease;
+       font-size: 0.9rem;
+     }
+     
+     .form-btn-save {
+       background: linear-gradient(135deg, #22c55e, #16a34a);
+       color: white;
+     }
+     
+     .form-btn-save:hover {
+       transform: translateY(-1px);
+       box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+     }
+     
+     .form-btn-cancel {
+       background: rgba(156, 163, 175, 0.1);
+       color: #6b7280;
+       border: 1px solid rgba(156, 163, 175, 0.2);
+     }
+     
+     .form-btn-cancel:hover {
+       background: rgba(156, 163, 175, 0.2);
+     }
     
     .language-toggle {
       background: rgba(255, 255, 255, 0.1);
@@ -607,32 +1071,100 @@
       background: linear-gradient(135deg, #5a67d8, #6b46c1);
     }
     
-    /* Mobile responsiveness */
-    @media (max-width: 768px) {
-      .container {
-        grid-template-columns: 1fr;
-        height: 100vh;
-      }
-      
-      .sidebar {
-        display: none;
-      }
-      
-      .bubble {
-        max-width: 90%;
-      }
-      
-      .content {
-        max-width: 85%;
-      }
-    }
+     /* Mobile responsiveness */
+     @media (max-width: 768px) {
+       .container {
+         grid-template-columns: 1fr;
+         height: 100vh;
+       }
+       
+       .sidebar {
+         display: none;
+       }
+       
+       .bubble {
+         max-width: 90%;
+       }
+       
+       .content {
+         max-width: 85%;
+       }
+       
+       .profile-section {
+         padding: 16px;
+         margin-bottom: 16px;
+       }
+       
+       .profile-avatar {
+         width: 60px;
+         height: 60px;
+         font-size: 1.5rem;
+       }
+       
+       .profile-name {
+         font-size: 1rem;
+       }
+       
+       .profile-role {
+         font-size: 0.8rem;
+       }
+       
+       .profile-stats {
+         gap: 6px;
+       }
+       
+       .stat-item {
+         padding: 6px;
+       }
+       
+       .stat-value {
+         font-size: 0.8rem;
+       }
+       
+       .stat-label {
+         font-size: 0.65rem;
+       }
+       
+       .profile-actions {
+         gap: 6px;
+       }
+       
+       .profile-btn {
+         padding: 6px;
+         font-size: 0.75rem;
+       }
+     }
   </style>
 </head>
 <body>
   <div class="container">
-    <aside class="sidebar">
-      <div class="brand">Haritha Chat 🌿</div>
-      <div class="language-toggle">
+     <aside class="sidebar">
+       <div class="brand">Haritha Chat 🌿</div>
+       
+       <!-- Profile Section -->
+       <div class="profile-section" onclick="showProfileModal()">
+         <div class="profile-avatar">👨‍🌾</div>
+         <div class="profile-name" data-en="Kerala Farmer" data-ml="കേരള കർഷകൻ">Kerala Farmer</div>
+         <div class="profile-role" data-en="Smart Agriculture Expert" data-ml="സ്മാർട്ട് കാർഷിക വിദഗ്ധൻ">Smart Agriculture Expert</div>
+         
+         <div class="profile-stats">
+           <div class="stat-item">
+             <div class="stat-value" id="totalChats">0</div>
+             <div class="stat-label" data-en="Chats" data-ml="ചാറ്റുകൾ">Chats</div>
+           </div>
+           <div class="stat-item">
+             <div class="stat-value" id="totalQuestions">0</div>
+             <div class="stat-label" data-en="Questions" data-ml="ചോദ്യങ്ങൾ">Questions</div>
+           </div>
+         </div>
+         
+         <div class="profile-actions">
+           <button class="profile-btn" onclick="event.stopPropagation(); showProfileSettings()" data-en="Settings" data-ml="സെറ്റിംഗ്സ്">⚙️</button>
+           <button class="profile-btn" onclick="event.stopPropagation(); showAchievements()" data-en="Badges" data-ml="ബാഡ്ജുകൾ">🏆</button>
+         </div>
+       </div>
+       
+       <div class="language-toggle">
         <div class="toggle-label">Language</div>
         <label class="switch">
           <input type="checkbox" id="langToggle">
@@ -651,9 +1183,161 @@
         </div>
       </div>
       
-      <a href="/dashboard" class="btn" data-en="Dashboard" data-ml="ഡാഷ്‌ബോർഡ്">📊 Dashboard</a>
-      <a href="/logout" class="btn" data-en="Logout" data-ml="പുറത്തുകടക്കുക">🚪 Logout</a>
-    </aside>
+       <a href="/dashboard" class="btn" data-en="Dashboard" data-ml="ഡാഷ്‌ബോർഡ്">📊 Dashboard</a>
+       <a href="/logout" class="btn" data-en="Logout" data-ml="പുറത്തുകടക്കുക">🚪 Logout</a>
+     </aside>
+
+     <!-- Profile Modal -->
+     <div class="profile-modal" id="profileModal">
+       <div class="profile-modal-content">
+         <div class="profile-modal-header">
+           <div class="profile-modal-title">
+             👨‍🌾 <span data-en="Farmer Profile" data-ml="കർഷക പ്രൊഫൈൽ">Farmer Profile</span>
+           </div>
+           <button class="profile-modal-close" onclick="closeProfileModal()">×</button>
+         </div>
+         
+         <div class="profile-modal-avatar">👨‍🌾</div>
+         
+         <div class="profile-modal-info">
+           <div class="profile-modal-name" id="profileDisplayName" data-en="Kerala Farmer" data-ml="കേരള കർഷകൻ">Kerala Farmer</div>
+           <div class="profile-modal-role" data-en="Smart Agriculture Expert" data-ml="സ്മാർട്ട് കാർഷിക വിദഗ്ധൻ">Smart Agriculture Expert</div>
+         </div>
+         
+         <!-- Profile Information Section -->
+         <div class="profile-info-section">
+           <div class="profile-modal-section-title">
+             📋 <span data-en="Personal Information" data-ml="വ്യക്തിഗത വിവരങ്ങൾ">Personal Information</span>
+           </div>
+           
+           <div class="info-item">
+             <span class="info-label" data-en="Full Name" data-ml="പൂർണ്ണ നാമം">Full Name</span>
+             <span class="info-value" id="infoFullName">-</span>
+           </div>
+           
+           <div class="info-item">
+             <span class="info-label" data-en="Aadhaar Number" data-ml="ആധാർ നമ്പർ">Aadhaar Number</span>
+             <span class="info-value" id="infoAadhaar">-</span>
+           </div>
+           
+           <div class="info-item">
+             <span class="info-label" data-en="Phone Number" data-ml="ഫോൺ നമ്പർ">Phone Number</span>
+             <span class="info-value" id="infoPhone">-</span>
+           </div>
+           
+           <div class="info-item">
+             <span class="info-label" data-en="Email" data-ml="ഇമെയിൽ">Email</span>
+             <span class="info-value" id="infoEmail">-</span>
+           </div>
+           
+           <div class="info-item">
+             <span class="info-label" data-en="Location" data-ml="സ്ഥലം">Location</span>
+             <span class="info-value" id="infoLocation">-</span>
+           </div>
+           
+           <div class="info-item">
+             <span class="info-label" data-en="Farm Size" data-ml="കൃഷി ഭൂമി വലിപ്പം">Farm Size</span>
+             <span class="info-value" id="infoFarmSize">-</span>
+           </div>
+         </div>
+         
+         <!-- Edit Profile Form -->
+         <div class="profile-edit-form" id="profileEditForm">
+           <button class="edit-toggle-btn" onclick="toggleEditForm()" data-en="Edit Profile" data-ml="പ്രൊഫൈൽ എഡിറ്റ് ചെയ്യുക">✏️ Edit Profile</button>
+           
+           <form id="profileForm">
+             <div class="form-row">
+               <div class="form-group">
+                 <label class="form-label" data-en="Full Name" data-ml="പൂർണ്ണ നാമം">Full Name</label>
+                 <input type="text" class="form-input" id="editFullName" placeholder="Enter full name">
+               </div>
+               <div class="form-group">
+                 <label class="form-label" data-en="Phone Number" data-ml="ഫോൺ നമ്പർ">Phone Number</label>
+                 <input type="tel" class="form-input" id="editPhone" placeholder="Enter phone number">
+               </div>
+             </div>
+             
+             <div class="form-row">
+               <div class="form-group">
+                 <label class="form-label" data-en="Email" data-ml="ഇമെയിൽ">Email</label>
+                 <input type="email" class="form-input" id="editEmail" placeholder="Enter email">
+               </div>
+               <div class="form-group">
+                 <label class="form-label" data-en="Location" data-ml="സ്ഥലം">Location</label>
+                 <input type="text" class="form-input" id="editLocation" placeholder="Enter location">
+               </div>
+             </div>
+             
+             <div class="form-group">
+               <label class="form-label" data-en="Farm Size (acres)" data-ml="കൃഷി ഭൂമി വലിപ്പം (ഏക്കർ)">Farm Size (acres)</label>
+               <input type="number" class="form-input" id="editFarmSize" placeholder="Enter farm size in acres" min="0" step="0.1">
+             </div>
+             
+             <div class="form-actions">
+               <button type="button" class="form-btn form-btn-save" onclick="saveProfile()" data-en="Save Changes" data-ml="മാറ്റങ്ങൾ സേവ് ചെയ്യുക">Save Changes</button>
+               <button type="button" class="form-btn form-btn-cancel" onclick="cancelEdit()" data-en="Cancel" data-ml="റദ്ദാക്കുക">Cancel</button>
+             </div>
+           </form>
+         </div>
+         
+         <div class="profile-modal-stats">
+           <div class="profile-modal-stat">
+             <div class="profile-modal-stat-value" id="modalTotalChats">0</div>
+             <div class="profile-modal-stat-label" data-en="Chats" data-ml="ചാറ്റുകൾ">Chats</div>
+           </div>
+           <div class="profile-modal-stat">
+             <div class="profile-modal-stat-value" id="modalTotalQuestions">0</div>
+             <div class="profile-modal-stat-label" data-en="Questions" data-ml="ചോദ്യങ്ങൾ">Questions</div>
+           </div>
+           <div class="profile-modal-stat">
+             <div class="profile-modal-stat-value" id="modalTotalDays">1</div>
+             <div class="profile-modal-stat-label" data-en="Days Active" data-ml="സജീവ ദിവസങ്ങൾ">Days Active</div>
+           </div>
+         </div>
+         
+         <div class="profile-modal-achievements">
+           <div class="profile-modal-section-title">
+             🏆 <span data-en="Achievements" data-ml="പ്രാപ്തികൾ">Achievements</span>
+           </div>
+           
+           <div class="achievement-item">
+             <div class="achievement-icon">🥉</div>
+             <div class="achievement-text">
+               <div class="achievement-title" data-en="Beginner Farmer" data-ml="ആരംഭിക്കുന്ന കർഷകൻ">Beginner Farmer</div>
+               <div class="achievement-desc" data-en="Ask 5+ questions" data-ml="5+ ചോദ്യങ്ങൾ ചോദിക്കുക">Ask 5+ questions</div>
+             </div>
+             <div class="achievement-status" id="beginnerStatus" data-en="Locked" data-ml="പൂട്ടിയിരിക്കുന്നു">Locked</div>
+           </div>
+           
+           <div class="achievement-item">
+             <div class="achievement-icon">🏆</div>
+             <div class="achievement-text">
+               <div class="achievement-title" data-en="Expert Farmer" data-ml="കർഷക വിദഗ്ധൻ">Expert Farmer</div>
+               <div class="achievement-desc" data-en="Ask 10+ questions" data-ml="10+ ചോദ്യങ്ങൾ ചോദിക്കുക">Ask 10+ questions</div>
+             </div>
+             <div class="achievement-status" id="expertStatus" data-en="Locked" data-ml="പൂട്ടിയിരിക്കുന്നു">Locked</div>
+           </div>
+           
+           <div class="achievement-item">
+             <div class="achievement-icon">🌟</div>
+             <div class="achievement-text">
+               <div class="achievement-title" data-en="Chat Master" data-ml="ചാറ്റ് മാസ്റ്റർ">Chat Master</div>
+               <div class="achievement-desc" data-en="Start 10+ chat sessions" data-ml="10+ ചാറ്റ് സെഷനുകൾ ആരംഭിക്കുക">Start 10+ chat sessions</div>
+             </div>
+             <div class="achievement-status" id="chatMasterStatus" data-en="Locked" data-ml="പൂട്ടിയിരിക്കുന്നു">Locked</div>
+           </div>
+         </div>
+         
+         <div class="profile-modal-actions">
+           <button class="profile-modal-btn profile-modal-btn-primary" onclick="exportChatHistory()">
+             📤 <span data-en="Export Chats" data-ml="ചാറ്റുകൾ എക്സ്പോർട്ട് ചെയ്യുക">Export Chats</span>
+           </button>
+           <button class="profile-modal-btn profile-modal-btn-secondary" onclick="resetProfile()">
+             🔄 <span data-en="Reset Profile" data-ml="പ്രൊഫൈൽ റീസെറ്റ് ചെയ്യുക">Reset Profile</span>
+           </button>
+         </div>
+       </div>
+     </div>
 
     <div class="main">
       <div class="messages" id="messages">
@@ -718,46 +1402,293 @@
     const imageBtn = document.getElementById('imageBtn');
     const previewEl = document.getElementById('imagePreview');
     
-    // Chat session management
-    let currentChatId = null;
-    let chatSessions = JSON.parse(localStorage.getItem('chatSessions') || '{}');
+     // Chat session management
+     let currentChatId = null;
+     let chatSessions = JSON.parse(localStorage.getItem('chatSessions') || '{}');
+     
+     // Profile management
+     let userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+     let totalQuestions = parseInt(localStorage.getItem('totalQuestions') || '0');
+     let totalChats = Object.keys(chatSessions).length;
+     
+     // Default profile data (from signup)
+     const defaultProfile = {
+       fullName: "Kerala Farmer",
+       aadhaar: "1234-5678-9012",
+       phone: "+91 98765 43210",
+       email: "farmer@kerala.com",
+       location: "Thrissur, Kerala",
+       farmSize: "2.5"
+     };
+     
+     // Initialize profile if not exists
+     if (!userProfile.fullName) {
+       userProfile = { ...defaultProfile };
+       localStorage.setItem('userProfile', JSON.stringify(userProfile));
+     }
     
 
     function getLang() {
       return document.getElementById('langToggle').checked ? 'ml' : 'en';
     }
 
-    function updateLanguage() {
-      const isMalayalam = document.getElementById('langToggle').checked;
-      const lang = isMalayalam ? 'ml' : 'en';
-      
-      // Update button texts
-      document.querySelectorAll('[data-en][data-ml]').forEach(element => {
-        element.textContent = element.getAttribute(`data-${lang}`);
-      });
-      
-      // Update placeholder
-      const prompt = document.getElementById('prompt');
-      prompt.placeholder = prompt.getAttribute(`data-${lang}`);
-      
-      // Update avatar texts
-      document.querySelectorAll('.avatar').forEach(avatar => {
-        if (avatar.textContent === 'നിങ്ങൾ' || avatar.textContent === 'You') {
-          avatar.textContent = isMalayalam ? 'നിങ്ങൾ' : 'You';
-        } else if (avatar.textContent === 'എഐ' || avatar.textContent === 'AI') {
-          avatar.textContent = isMalayalam ? 'എഐ' : 'AI';
-        }
-      });
-      
-      // Update welcome message if it's the first message
-      const firstMessage = document.querySelector('.bubble .content');
-      if (firstMessage && firstMessage.textContent.includes('Namaskaram')) {
-        firstMessage.textContent = isMalayalam 
-          ? 'നമസ്കാരം! ഞാൻ നിങ്ങളുടെ ഹരിത AI ആണ്. വിള ആസൂത്രണം, വിപണി വിലകൾ, ജലസേചനം, കേരളത്തിന് പ്രത്യേകമായ മികച്ച പരിശീലനങ്ങൾ എന്നിവയെക്കുറിച്ച് ചോദിക്കുക.'
-          : 'Namaskaram! I am your Haritha AI. Ask about crop planning, market prices, irrigation, or Kerala-specific best practices.';
-      }
-      
-    }
+     function updateLanguage() {
+       const isMalayalam = document.getElementById('langToggle').checked;
+       const lang = isMalayalam ? 'ml' : 'en';
+       
+       // Update button texts
+       document.querySelectorAll('[data-en][data-ml]').forEach(element => {
+         element.textContent = element.getAttribute(`data-${lang}`);
+       });
+       
+       // Update placeholder
+       const prompt = document.getElementById('prompt');
+       prompt.placeholder = prompt.getAttribute(`data-${lang}`);
+       
+       // Update avatar texts
+       document.querySelectorAll('.avatar').forEach(avatar => {
+         if (avatar.textContent === 'നിങ്ങൾ' || avatar.textContent === 'You') {
+           avatar.textContent = isMalayalam ? 'നിങ്ങൾ' : 'You';
+         } else if (avatar.textContent === 'എഐ' || avatar.textContent === 'AI') {
+           avatar.textContent = isMalayalam ? 'എഐ' : 'AI';
+         }
+       });
+       
+       // Update welcome message if it's the first message
+       const firstMessage = document.querySelector('.bubble .content');
+       if (firstMessage && firstMessage.textContent.includes('Namaskaram')) {
+         firstMessage.textContent = isMalayalam 
+           ? 'നമസ്കാരം! ഞാൻ നിങ്ങളുടെ ഹരിത AI ആണ്. വിള ആസൂത്രണം, വിപണി വിലകൾ, ജലസേചനം, കേരളത്തിന് പ്രത്യേകമായ മികച്ച പരിശീലനങ്ങൾ എന്നിവയെക്കുറിച്ച് ചോദിക്കുക.'
+           : 'Namaskaram! I am your Haritha AI. Ask about crop planning, market prices, irrigation, or Kerala-specific best practices.';
+       }
+       
+     }
+
+     // Profile management functions
+     function updateProfileStats() {
+       totalChats = Object.keys(chatSessions).length;
+       document.getElementById('totalChats').textContent = totalChats;
+       document.getElementById('totalQuestions').textContent = totalQuestions;
+       
+       // Update modal stats if modal is open
+       if (document.getElementById('profileModal').style.display === 'flex') {
+         updateModalStats();
+       }
+     }
+
+     function incrementQuestionCount() {
+       totalQuestions++;
+       localStorage.setItem('totalQuestions', totalQuestions.toString());
+       updateProfileStats();
+     }
+
+     function showProfileModal() {
+       const modal = document.getElementById('profileModal');
+       modal.style.display = 'flex';
+       updateModalStats();
+       updateAchievementStatus();
+       loadProfileInfo();
+     }
+
+     function closeProfileModal() {
+       document.getElementById('profileModal').style.display = 'none';
+     }
+
+     function updateModalStats() {
+       document.getElementById('modalTotalChats').textContent = totalChats;
+       document.getElementById('modalTotalQuestions').textContent = totalQuestions;
+       
+       // Calculate days active (simple implementation)
+       const firstChat = Object.values(chatSessions).sort((a, b) => 
+         new Date(a.createdAt) - new Date(b.createdAt)
+       )[0];
+       
+       if (firstChat) {
+         const daysSinceFirst = Math.ceil((new Date() - new Date(firstChat.createdAt)) / (1000 * 60 * 60 * 24));
+         document.getElementById('modalTotalDays').textContent = Math.max(1, daysSinceFirst);
+       }
+     }
+
+     function updateAchievementStatus() {
+       const lang = getLang();
+       
+       // Beginner Farmer (5+ questions)
+       const beginnerStatus = document.getElementById('beginnerStatus');
+       if (totalQuestions >= 5) {
+         beginnerStatus.textContent = lang === 'ml' ? 'നേടി' : 'Unlocked';
+         beginnerStatus.className = 'achievement-status achievement-unlocked';
+       } else {
+         beginnerStatus.textContent = lang === 'ml' ? 'പൂട്ടിയിരിക്കുന്നു' : 'Locked';
+         beginnerStatus.className = 'achievement-status achievement-locked';
+       }
+       
+       // Expert Farmer (10+ questions)
+       const expertStatus = document.getElementById('expertStatus');
+       if (totalQuestions >= 10) {
+         expertStatus.textContent = lang === 'ml' ? 'നേടി' : 'Unlocked';
+         expertStatus.className = 'achievement-status achievement-unlocked';
+       } else {
+         expertStatus.textContent = lang === 'ml' ? 'പൂട്ടിയിരിക്കുന്നു' : 'Locked';
+         expertStatus.className = 'achievement-status achievement-locked';
+       }
+       
+       // Chat Master (10+ chats)
+       const chatMasterStatus = document.getElementById('chatMasterStatus');
+       if (totalChats >= 10) {
+         chatMasterStatus.textContent = lang === 'ml' ? 'നേടി' : 'Unlocked';
+         chatMasterStatus.className = 'achievement-status achievement-unlocked';
+       } else {
+         chatMasterStatus.textContent = lang === 'ml' ? 'പൂട്ടിയിരിക്കുന്നു' : 'Locked';
+         chatMasterStatus.className = 'achievement-status achievement-locked';
+       }
+     }
+
+     function exportChatHistory() {
+       const lang = getLang();
+       const exportData = {
+         profile: {
+           name: "Kerala Farmer",
+           totalChats: totalChats,
+           totalQuestions: totalQuestions,
+           exportDate: new Date().toISOString()
+         },
+         chatSessions: chatSessions
+       };
+       
+       const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+       const url = URL.createObjectURL(blob);
+       const a = document.createElement('a');
+       a.href = url;
+       a.download = `haritha-chat-history-${new Date().toISOString().split('T')[0]}.json`;
+       document.body.appendChild(a);
+       a.click();
+       document.body.removeChild(a);
+       URL.revokeObjectURL(url);
+       
+       const successMsg = lang === 'ml' 
+         ? 'ചാറ്റ് ചരിത്രം വിജയകരമായി എക്സ്പോർട്ട് ചെയ്തു!'
+         : 'Chat history exported successfully!';
+       appendMessage('assistant', successMsg);
+     }
+
+     function resetProfile() {
+       const lang = getLang();
+       const confirmMsg = lang === 'ml' 
+         ? 'പ്രൊഫൈൽ റീസെറ്റ് ചെയ്യാൻ ഉറപ്പാണോ? എല്ലാ ഡാറ്റയും നഷ്ടപ്പെടും.'
+         : 'Are you sure you want to reset your profile? All data will be lost.';
+       
+       if (confirm(confirmMsg)) {
+         localStorage.removeItem('chatSessions');
+         localStorage.removeItem('totalQuestions');
+         localStorage.removeItem('userProfile');
+         
+         // Reset variables
+         chatSessions = {};
+         totalQuestions = 0;
+         totalChats = 0;
+         
+         // Update UI
+         updateProfileStats();
+         startNewChat();
+         closeProfileModal();
+         
+         const resetMsg = lang === 'ml' 
+           ? 'പ്രൊഫൈൽ വിജയകരമായി റീസെറ്റ് ചെയ്തു!'
+           : 'Profile reset successfully!';
+         appendMessage('assistant', resetMsg);
+       }
+     }
+
+     function showProfileSettings() {
+       showProfileModal();
+     }
+
+     function showAchievements() {
+       showProfileModal();
+     }
+
+     // Profile editing functions
+     function loadProfileInfo() {
+       // Update display name
+       document.getElementById('profileDisplayName').textContent = userProfile.fullName;
+       
+       // Update info display
+       document.getElementById('infoFullName').textContent = userProfile.fullName || '-';
+       document.getElementById('infoAadhaar').textContent = userProfile.aadhaar || '-';
+       document.getElementById('infoPhone').textContent = userProfile.phone || '-';
+       document.getElementById('infoEmail').textContent = userProfile.email || '-';
+       document.getElementById('infoLocation').textContent = userProfile.location || '-';
+       document.getElementById('infoFarmSize').textContent = userProfile.farmSize ? userProfile.farmSize + ' acres' : '-';
+       
+       // Update sidebar profile name
+       document.querySelector('.profile-name').textContent = userProfile.fullName;
+     }
+
+     function toggleEditForm() {
+       const editForm = document.getElementById('profileEditForm');
+       const isActive = editForm.classList.contains('active');
+       
+       if (isActive) {
+         editForm.classList.remove('active');
+       } else {
+         editForm.classList.add('active');
+         populateEditForm();
+       }
+     }
+
+     function populateEditForm() {
+       document.getElementById('editFullName').value = userProfile.fullName || '';
+       document.getElementById('editPhone').value = userProfile.phone || '';
+       document.getElementById('editEmail').value = userProfile.email || '';
+       document.getElementById('editLocation').value = userProfile.location || '';
+       document.getElementById('editFarmSize').value = userProfile.farmSize || '';
+     }
+
+     function saveProfile() {
+       const lang = getLang();
+       
+       // Get form values
+       const fullName = document.getElementById('editFullName').value.trim();
+       const phone = document.getElementById('editPhone').value.trim();
+       const email = document.getElementById('editEmail').value.trim();
+       const location = document.getElementById('editLocation').value.trim();
+       const farmSize = document.getElementById('editFarmSize').value.trim();
+       
+       // Basic validation
+       if (!fullName) {
+         const errorMsg = lang === 'ml' 
+           ? 'പൂർണ്ണ നാമം നൽകുക'
+           : 'Please enter full name';
+         alert(errorMsg);
+         return;
+       }
+       
+       // Update profile
+       userProfile.fullName = fullName;
+       userProfile.phone = phone;
+       userProfile.email = email;
+       userProfile.location = location;
+       userProfile.farmSize = farmSize;
+       
+       // Save to localStorage
+       localStorage.setItem('userProfile', JSON.stringify(userProfile));
+       
+       // Update display
+       loadProfileInfo();
+       
+       // Hide edit form
+       document.getElementById('profileEditForm').classList.remove('active');
+       
+       // Show success message
+       const successMsg = lang === 'ml' 
+         ? 'പ്രൊഫൈൽ വിജയകരമായി അപ്ഡേറ്റ് ചെയ്തു!'
+         : 'Profile updated successfully!';
+       appendMessage('assistant', successMsg);
+     }
+
+     function cancelEdit() {
+       document.getElementById('profileEditForm').classList.remove('active');
+     }
 
     // Chat session management functions
     function generateChatId() {
@@ -1036,51 +1967,54 @@
       startNewChat();
     });
 
-    formEl.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const text = promptEl.value.trim();
-      if (!text) return;
-      
-      appendMessage('user', text);
-      promptEl.value = '';
-      showTypingIndicator();
-      
-      const imagesPayload = await collectSelectedImages();
-      clearPreview();
-      
-      try {
-        const resp = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, history, lang: getLang(), images: imagesPayload })
-        });
-        
-        hideTypingIndicator();
-        
-        if (!resp.ok) {
-          const t = await resp.text();
-          appendMessage('assistant', `പിശക് ${resp.status}: ${t}`);
-          return;
-        }
-        
-        const json = await resp.json();
-        const reply = json.reply || 'ഉള്ളടക്കം തിരികെ നൽകിയില്ല.';
-        appendMessage('assistant', reply);
-        history.push({ role: 'user', content: text });
-        history.push({ role: 'assistant', content: reply });
-        
-        // Handle insights and suggestions
-        if (json.insights) {
-          showInsights(json.insights);
-        }
-        
-        // Save chat session after AI response
-        saveChatSession();
-      } catch (err) {
-        hideTypingIndicator();
-        appendMessage('assistant', 'നെറ്റ്‌വർക്ക് പിശക്: ' + (err?.message || err));
-      }
-    });
+     formEl.addEventListener('submit', async (e) => {
+       e.preventDefault();
+       const text = promptEl.value.trim();
+       if (!text) return;
+       
+       appendMessage('user', text);
+       promptEl.value = '';
+       showTypingIndicator();
+       
+       // Increment question count
+       incrementQuestionCount();
+       
+       const imagesPayload = await collectSelectedImages();
+       clearPreview();
+       
+       try {
+         const resp = await fetch('/api/chat', {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({ message: text, history, lang: getLang(), images: imagesPayload })
+         });
+         
+         hideTypingIndicator();
+         
+         if (!resp.ok) {
+           const t = await resp.text();
+           appendMessage('assistant', `പിശക് ${resp.status}: ${t}`);
+           return;
+         }
+         
+         const json = await resp.json();
+         const reply = json.reply || 'ഉള്ളടക്കം തിരികെ നൽകിയില്ല.';
+         appendMessage('assistant', reply);
+         history.push({ role: 'user', content: text });
+         history.push({ role: 'assistant', content: reply });
+         
+         // Handle insights and suggestions
+         if (json.insights) {
+           showInsights(json.insights);
+         }
+         
+         // Save chat session after AI response
+         saveChatSession();
+       } catch (err) {
+         hideTypingIndicator();
+         appendMessage('assistant', 'നെറ്റ്‌വർക്ക് പിശക്: ' + (err?.message || err));
+       }
+     });
 
     // --- Voice recording and transcription ---
     let mediaRecorder;
@@ -1352,19 +2286,37 @@
       promptEl.style.borderColor = 'transparent';
     });
 
-    // Language toggle functionality
-    document.getElementById('langToggle').addEventListener('change', updateLanguage);
+     // Language toggle functionality
+     document.getElementById('langToggle').addEventListener('change', updateLanguage);
+     
+     // Close modal when clicking outside
+     document.getElementById('profileModal').addEventListener('click', (e) => {
+       if (e.target.id === 'profileModal') {
+         closeProfileModal();
+       }
+     });
+     
+     // Close modal with Escape key
+     document.addEventListener('keydown', (e) => {
+       if (e.key === 'Escape' && document.getElementById('profileModal').style.display === 'flex') {
+         closeProfileModal();
+       }
+     });
 
     // Initialize with English (default) - ensure toggle is off
     document.getElementById('langToggle').checked = false;
     updateLanguage();
     
-    // Initialize chat session
-    if (!currentChatId) {
-      startNewChat();
-    } else {
-      loadChatHistory();
-    }
+     // Initialize profile stats
+     updateProfileStats();
+     loadProfileInfo();
+     
+     // Initialize chat session
+     if (!currentChatId) {
+       startNewChat();
+     } else {
+       loadChatHistory();
+     }
     
   </script>
 </body>
