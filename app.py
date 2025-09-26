@@ -10,7 +10,7 @@ DEFAULT_MODEL = "gemini-2.0-flash"
 
 # Hardcoded APIs for testing
 GEMINI_API_KEY = "AIzaSyBGB7lHbfqCQqDBDiGnGJK_FigQQEidT1Q"
-VOICE_API_URL = "https://soniox.com/"
+VOICE_API_URL = "wss://stt-rt.soniox.com/transcribe-websocket"
 VOICE_API_KEY = "f9c49e723255a24404d570c570f71470b23a715d03949924705e40ddc575b110"
 
 # -------------------------

@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Krishi Sakhi</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    :root {
+      --green-dark: #1e7f3e;
+      --green: #2e9f4f;
+      --green-light: #6dcf7e;
+      --earth: #8b6f47;
+      --bg: #f3f7f3;
+      --text: #1b1b1b;
+      --muted: #6b6b6b;
+      --card: #ffffff;
+      --ring: rgba(46, 159, 79, 0.35);
+      --border: rgba(46, 159, 79, 0.15);
+    }
+
+    body.dark {
+      --bg: #0f1510;
+      --text: #e8f2ea;
+      --muted: #a7b8aa;
+      --card: #141d15;
+      --ring: rgba(109, 207, 126, 0.3);
+      --border: rgba(109, 207, 126, 0.15);
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, rgba(30,127,62,0.2), rgba(141,111,71,0.15)), url('indx.jpg') center/cover no-repeat fixed;
+      color: var(--text);
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #f5fff8;
+    }
+
+    .pfp {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffd166, #95d5b2);
+      color: #1b4d3e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    .nav {
+      display: flex;
+      gap: 14px;
+    }
+
+    .nav a {
+      color: #e9fff0;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 10px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .nav a:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border: 1px solid var(--border);
+    }
+
+    .profile-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--green-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: white;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .profile-pic:hover {
+      transform: scale(1.05);
+    }
+
+    .profile-pic img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .profile-pic input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .change-photo {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px;
+      font-size: 0.8rem;
+      transform: translateY(100%);
+      transition: transform 0.2s ease;
+    }
+
+    .profile-pic:hover .change-photo {
+      transform: translateY(0);
+    }
+
+    .user-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 8px;
+    }
+
+    .user-location {
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .location-btn {
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .location-btn:hover {
+      background: var(--green-dark);
+      transform: scale(1.1);
+    }
+
+    .location-btn:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .location-loading {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .info-label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      color: var(--text);
+      padding: 8px 12px;
+      background: var(--bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .crops-section {
+      grid-column: 1 / -1;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .crops-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .crop-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .crop-item:hover {
+      background: rgba(46, 159, 79, 0.05);
+      border-color: var(--green);
+    }
+
+    .crop-name {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .crop-status {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .remove-crop {
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: background 0.2s ease;
+    }
+
+    .remove-crop:hover {
+      background: #dc2626;
+    }
+
+    .add-crop-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .add-crop-input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      outline: none;
+    }
+
+    .add-crop-input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px var(--ring);
+    }
+
+    .add-crop-btn {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    .add-crop-btn:hover {
+      background: var(--green-dark);
+    }
+
+    .btn {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      transition: background 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--green-dark);
+    }
+
+    .btn-secondary {
+      background: var(--muted);
+    }
+
+    .btn-secondary:hover {
+      background: #555;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .control-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      text-decoration: none;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+      background-color: var(--card);
+      margin: 5% auto;
+      padding: 0;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+    }
+
+    .modal-header {
+      background: linear-gradient(90deg, var(--green-dark), var(--green));
+      color: white;
+      padding: 20px;
+      border-radius: 16px 16px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .close {
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .close:hover {
+      opacity: 0.7;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px var(--ring);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .form-select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px var(--ring);
+    }
+
+    .readonly-field {
+      background: #f5f5f5;
+      color: var(--muted);
+      cursor: not-allowed;
+    }
+
+    .modal-footer {
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .btn-cancel {
+      background: var(--muted);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-cancel:hover {
+      background: #555;
+    }
+
+    .btn-save {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-save:hover {
+      background: var(--green-dark);
+    }
+
+    .address-section {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+      background: var(--bg);
+    }
+
+    .address-title {
+      font-weight: 600;
+      color: var(--green-dark);
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .modal-content {
+        width: 95%;
+        margin: 10% auto;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .modal-footer {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .crops-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <div class="pfp" aria-hidden="true">🌿</div>
+      <div>
+        <div style="font-weight: 700; font-size: 1.1rem;">Krishi Sakhi</div>
+        <div style="font-size: 0.8rem; opacity: 0.9;">AI-powered Farming Assistant</div>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Primary">
+      <a href="home.html">Home</a>
+      <a href="http://127.0.0.1:5000">AI Assistant</a>
+      <a href="#contact">Contact Us</a>
+    </nav>
+    <div class="controls">
+      <button id="themeToggle" class="control-btn" aria-label="Toggle Dark Mode">🌙</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="dashboard-grid">
+      <!-- Profile Section -->
+      <div class="card profile-section">
+        <div class="profile-pic" id="profilePic">
+          <div id="profileInitial">A</div>
+          <img id="profileImage" style="display: none;" alt="Profile Picture">
+          <input type="file" id="photoInput" accept="image/*" style="display: none;">
+          <div class="change-photo">Change Photo</div>
+        </div>
+        <div class="user-name" id="userName">Anand Kumar</div>
+        <div class="user-location" id="userLocation">
+          <span id="locationText">Thiruvananthapuram, Kerala</span>
+          <button id="locationBtn" class="location-btn" onclick="getCurrentLocation()" title="Update location">📍</button>
+        </div>
+        
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Phone</div>
+            <div class="info-value" id="userPhone">9876543210</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Email</div>
+            <div class="info-value" id="userEmail">anand@example.com</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Aadhaar</div>
+            <div class="info-value" id="userAadhaar">123456789012</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Pincode</div>
+            <div class="info-value" id="userPincode">695001</div>
+          </div>
+        </div>
+        
+        <!-- Additional Profile Info -->
+        <div id="additionalInfo" style="margin-top: 16px; display: none;">
+          <div class="info-item" style="grid-column: 1 / -1;">
+            <div class="info-label">Address</div>
+            <div class="info-value" id="userAddress" style="white-space: pre-line;">-</div>
+          </div>
+          <div class="info-item" style="grid-column: 1 / -1;">
+            <div class="info-label">Bio</div>
+            <div class="info-value" id="userBio" style="white-space: pre-line;">-</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Farming Experience</div>
+            <div class="info-value" id="userFarmingExperience">-</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Farm Size</div>
+            <div class="info-value" id="userFarmSize">-</div>
+          </div>
+        </div>
+        
+        <button id="toggleInfoBtn" class="btn" style="margin-top: 12px; width: 100%; font-size: 0.9rem;" onclick="toggleAdditionalInfo()">
+          Show More Details
+        </button>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card">
+        <div class="section-title">Quick Actions</div>
+        <div style="display: grid; gap: 12px;">
+          <a href="http://127.0.0.1:5000" class="btn">Ask AI Assistant</a>
+          <a href="#market" class="btn btn-secondary">Check Market Prices</a>
+          <a href="#activity" class="btn btn-secondary">View Activity Log</a>
+          <button class="btn btn-secondary" onclick="editProfile()">Edit Profile</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Crops Section -->
+    <div class="card crops-section">
+      <div class="section-title">
+        🌾 My Crops
+      </div>
+      <div class="crops-grid" id="cropsGrid">
+        <!-- Crops will be dynamically added here -->
+      </div>
+      <div class="add-crop-form">
+        <input type="text" id="newCropInput" class="add-crop-input" placeholder="Enter crop name (e.g., Rice, Coconut, Pepper)">
+        <button class="add-crop-btn" onclick="addCrop()">Add Crop</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Edit Modal -->
+  <div id="editProfileModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Edit Profile</div>
+        <span class="close" onclick="closeEditModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="editProfileForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="editName">Full Name</label>
+              <input type="text" id="editName" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editEmail">Email</label>
+              <input type="email" id="editEmail" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="editPhone">Phone Number</label>
+              <input type="tel" id="editPhone" class="form-input readonly-field" readonly>
+              <small style="color: var(--muted); font-size: 0.8rem;">Phone number cannot be changed</small>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editAadhaar">Aadhaar Number</label>
+              <input type="text" id="editAadhaar" class="form-input readonly-field" readonly>
+              <small style="color: var(--muted); font-size: 0.8rem;">Aadhaar cannot be changed</small>
+            </div>
+          </div>
+
+          <div class="address-section">
+            <div class="address-title">Address Information</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="editPincode">Pincode</label>
+                <input type="text" id="editPincode" class="form-input" pattern="^[0-9]{6}$" maxlength="6">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="editDistrict">District</label>
+                <select id="editDistrict" class="form-select">
+                  <option value="">Select District</option>
+                  <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                  <option value="Kollam">Kollam</option>
+                  <option value="Pathanamthitta">Pathanamthitta</option>
+                  <option value="Alappuzha">Alappuzha</option>
+                  <option value="Kottayam">Kottayam</option>
+                  <option value="Idukki">Idukki</option>
+                  <option value="Ernakulam">Ernakulam</option>
+                  <option value="Thrissur">Thrissur</option>
+                  <option value="Palakkad">Palakkad</option>
+                  <option value="Malappuram">Malappuram</option>
+                  <option value="Kozhikode">Kozhikode</option>
+                  <option value="Wayanad">Wayanad</option>
+                  <option value="Kannur">Kannur</option>
+                  <option value="Kasaragod">Kasaragod</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editAddress">Full Address</label>
+              <textarea id="editAddress" class="form-input form-textarea" placeholder="Enter your complete address including village/town, street, etc."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editLandmark">Landmark (Optional)</label>
+              <input type="text" id="editLandmark" class="form-input" placeholder="Near temple, school, hospital, etc.">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editBio">Bio/About Me</label>
+            <textarea id="editBio" class="form-input form-textarea" placeholder="Tell us about yourself, your farming experience, etc."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="editFarmingExperience">Farming Experience (Years)</label>
+              <input type="number" id="editFarmingExperience" class="form-input" min="0" max="100" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editFarmSize">Farm Size (Acres)</label>
+              <input type="number" id="editFarmSize" class="form-input" min="0" step="0.1" placeholder="0.0">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+        <button type="button" class="btn-save" onclick="saveProfile()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const savedTheme = localStorage.getItem('krishi_theme') || 'light';
+    if (savedTheme === 'dark') body.classList.add('dark');
+    themeToggle.textContent = body.classList.contains('dark') ? '☀️' : '🌙';
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      const mode = body.classList.contains('dark') ? 'dark' : 'light';
+      localStorage.setItem('krishi_theme', mode);
+      themeToggle.textContent = mode === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Profile picture handling
+    const profilePic = document.getElementById('profilePic');
+    const profileImage = document.getElementById('profileImage');
+    const profileInitial = document.getElementById('profileInitial');
+    const photoInput = document.getElementById('photoInput');
+
+    profilePic.addEventListener('click', () => {
+      photoInput.click();
+    });
+
+    photoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          profileImage.src = e.target.result;
+          profileImage.style.display = 'block';
+          profileInitial.style.display = 'none';
+          localStorage.setItem('profileImage', e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Load saved profile image
+    const savedImage = localStorage.getItem('profileImage');
+    if (savedImage) {
+      profileImage.src = savedImage;
+      profileImage.style.display = 'block';
+      profileInitial.style.display = 'none';
+    }
+
+    // Location detection
+    function getCurrentLocation() {
+      const locationBtn = document.getElementById('locationBtn');
+      const locationText = document.getElementById('locationText');
+      
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by this browser.');
+        return;
+      }
+
+      locationBtn.disabled = true;
+      locationBtn.textContent = '⏳';
+      locationBtn.classList.add('location-loading');
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            const { latitude, longitude } = position.coords;
+            const location = await reverseGeocode(latitude, longitude);
+            
+            locationText.textContent = location;
+            
+            // Save location to user data
+            const userData = JSON.parse(localStorage.getItem('userData')) || {};
+            userData.currentLocation = location;
+            userData.latitude = latitude;
+            userData.longitude = longitude;
+            userData.lastLocationTime = Date.now();
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            locationBtn.textContent = '📍';
+            locationBtn.disabled = false;
+            locationBtn.classList.remove('location-loading');
+          } catch (error) {
+            console.error('Error getting location:', error);
+            alert('Unable to get location details. Please try again.');
+            locationBtn.textContent = '📍';
+            locationBtn.disabled = false;
+            locationBtn.classList.remove('location-loading');
+          }
+        },
+        (error) => {
+          console.error('Geolocation error:', error);
+          let errorMessage = 'Unable to get your location. ';
+          switch(error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage += 'Please allow location access and try again.';
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage += 'Location information is unavailable.';
+              break;
+            case error.TIMEOUT:
+              errorMessage += 'Location request timed out.';
+              break;
+            default:
+              errorMessage += 'An unknown error occurred.';
+              break;
+          }
+          alert(errorMessage);
+          locationBtn.textContent = '📍';
+          locationBtn.disabled = false;
+          locationBtn.classList.remove('location-loading');
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 300000 // 5 minutes
+        }
+      );
+    }
+
+    // Reverse geocoding to get address from coordinates
+    async function reverseGeocode(lat, lng) {
+      try {
+        // Try OpenStreetMap Nominatim first
+        let location = await tryNominatim(lat, lng);
+        if (location && !location.includes(',')) {
+          // If we only got coordinates, try alternative service
+          location = await tryAlternativeGeocoding(lat, lng);
+        }
+        return location || `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+      } catch (error) {
+        console.error('Reverse geocoding error:', error);
+        return `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+      }
+    }
+
+    // Try OpenStreetMap Nominatim API
+    async function tryNominatim(lat, lng) {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1&accept-language=en&zoom=16`
+        );
+        const data = await response.json();
+        
+        if (data && data.address) {
+          const addr = data.address;
+          let location = '';
+          let district = '';
+          
+          // Priority order for Kerala locations
+          // 1. Village/Town/City
+          if (addr.village) {
+            location += addr.village;
+          } else if (addr.town) {
+            location += addr.town;
+          } else if (addr.city) {
+            location += addr.city;
+          } else if (addr.hamlet) {
+            location += addr.hamlet;
+          } else if (addr.suburb) {
+            location += addr.suburb;
+          }
+          
+          // 2. District (most important for Kerala farmers)
+          if (addr.county) {
+            district = addr.county;
+          } else if (addr.state_district) {
+            district = addr.state_district;
+          } else if (addr.district) {
+            district = addr.district;
+          }
+          
+          // 3. State
+          let state = '';
+          if (addr.state) {
+            state = addr.state;
+          }
+          
+          // Build final location string
+          if (location && district) {
+            location += `, ${district}`;
+          } else if (district) {
+            location = district;
+          }
+          
+          if (state && state.toLowerCase().includes('kerala')) {
+            location += ', Kerala';
+          } else if (state) {
+            location += location ? `, ${state}` : state;
+          }
+          
+          // If we have a good location, return it
+          if (location.trim()) {
+            return location.trim();
+          }
+          
+          // Fallback: try to get any meaningful location info
+          const fallbackParts = [];
+          if (addr.postcode) fallbackParts.push(`Pincode: ${addr.postcode}`);
+          if (addr.county) fallbackParts.push(addr.county);
+          if (addr.state) fallbackParts.push(addr.state);
+          
+          if (fallbackParts.length > 0) {
+            return fallbackParts.join(', ');
+          }
+        }
+        return null;
+      } catch (error) {
+        console.error('Nominatim error:', error);
+        return null;
+      }
+    }
+
+    // Try alternative geocoding service
+    async function tryAlternativeGeocoding(lat, lng) {
+      try {
+        // Using BigDataCloud API as fallback
+        const response = await fetch(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+        );
+        const data = await response.json();
+        
+        if (data) {
+          let location = '';
+          
+          // Build location from available fields
+          if (data.locality) {
+            location += data.locality;
+          } else if (data.city) {
+            location += data.city;
+          } else if (data.principalSubdivision) {
+            location += data.principalSubdivision;
+          }
+          
+          if (data.principalSubdivision && data.principalSubdivision !== location) {
+            location += location ? `, ${data.principalSubdivision}` : data.principalSubdivision;
+          }
+          
+          if (data.countryName && data.countryName.toLowerCase().includes('india')) {
+            location += ', India';
+          }
+          
+          return location.trim() || null;
+        }
+        return null;
+      } catch (error) {
+        console.error('Alternative geocoding error:', error);
+        return null;
+      }
+    }
+
+    // Load user data from localStorage or use defaults
+    function loadUserData() {
+      const userData = JSON.parse(localStorage.getItem('userData')) || {
+        name: 'Anand Kumar',
+        phone: '9876543210',
+        email: 'anand@example.com',
+        aadhaar: '123456789012',
+        pincode: '695001',
+        district: 'Thiruvananthapuram',
+        address: '',
+        landmark: '',
+        bio: '',
+        farmingExperience: null,
+        farmSize: null,
+        crops: ['Rice', 'Coconut', 'Pepper', 'Banana']
+      };
+
+      document.getElementById('userName').textContent = userData.name;
+      document.getElementById('userPhone').textContent = userData.phone;
+      document.getElementById('userEmail').textContent = userData.email;
+      document.getElementById('userAadhaar').textContent = userData.aadhaar;
+      document.getElementById('userPincode').textContent = userData.pincode;
+      
+      // Use current location if available, otherwise use district
+      const locationText = userData.currentLocation || `${userData.district}, Kerala`;
+      document.getElementById('locationText').textContent = locationText;
+
+      // Load additional profile info
+      loadAdditionalInfo(userData);
+
+      // Load crops
+      loadCrops(userData.crops);
+    }
+
+    // Load additional profile information
+    function loadAdditionalInfo(userData) {
+      // Build address string
+      let addressParts = [];
+      if (userData.address) addressParts.push(userData.address);
+      if (userData.landmark) addressParts.push(`Near: ${userData.landmark}`);
+      if (userData.pincode) addressParts.push(`Pincode: ${userData.pincode}`);
+      if (userData.district) addressParts.push(`${userData.district}, Kerala`);
+      
+      const addressText = addressParts.length > 0 ? addressParts.join('\n') : 'No address provided';
+      document.getElementById('userAddress').textContent = addressText;
+      
+      // Bio
+      document.getElementById('userBio').textContent = userData.bio || 'No bio provided';
+      
+      // Farming experience
+      const experienceText = userData.farmingExperience ? `${userData.farmingExperience} years` : 'Not specified';
+      document.getElementById('userFarmingExperience').textContent = experienceText;
+      
+      // Farm size
+      const farmSizeText = userData.farmSize ? `${userData.farmSize} acres` : 'Not specified';
+      document.getElementById('userFarmSize').textContent = farmSizeText;
+    }
+
+    // Toggle additional info display
+    function toggleAdditionalInfo() {
+      const additionalInfo = document.getElementById('additionalInfo');
+      const toggleBtn = document.getElementById('toggleInfoBtn');
+      
+      if (additionalInfo.style.display === 'none' || additionalInfo.style.display === '') {
+        additionalInfo.style.display = 'block';
+        toggleBtn.textContent = 'Show Less Details';
+      } else {
+        additionalInfo.style.display = 'none';
+        toggleBtn.textContent = 'Show More Details';
+      }
+    }
+
+    // Crops management
+    function loadCrops(crops) {
+      const cropsGrid = document.getElementById('cropsGrid');
+      cropsGrid.innerHTML = '';
+      
+      crops.forEach((crop, index) => {
+        const cropItem = document.createElement('div');
+        cropItem.className = 'crop-item';
+        cropItem.innerHTML = `
+          <div>
+            <div class="crop-name">${crop}</div>
+            <div class="crop-status">Currently cultivating</div>
+          </div>
+          <button class="remove-crop" onclick="removeCrop(${index})" title="Remove crop">×</button>
+        `;
+        cropsGrid.appendChild(cropItem);
+      });
+    }
+
+    function addCrop() {
+      const input = document.getElementById('newCropInput');
+      const cropName = input.value.trim();
+      
+      if (!cropName) {
+        alert('Please enter a crop name');
+        return;
+      }
+
+      const userData = JSON.parse(localStorage.getItem('userData')) || { crops: [] };
+      if (!userData.crops) userData.crops = [];
+      
+      if (userData.crops.includes(cropName)) {
+        alert('This crop is already in your list');
+        return;
+      }
+
+      userData.crops.push(cropName);
+      localStorage.setItem('userData', JSON.stringify(userData));
+      
+      loadCrops(userData.crops);
+      input.value = '';
+    }
+
+    function removeCrop(index) {
+      const userData = JSON.parse(localStorage.getItem('userData')) || { crops: [] };
+      userData.crops.splice(index, 1);
+      localStorage.setItem('userData', JSON.stringify(userData));
+      loadCrops(userData.crops);
+    }
+
+    // Profile editing functions
+    function   editProfile() {
+      const modal = document.getElementById('editProfileModal');
+      const userData = JSON.parse(localStorage.getItem('userData')) || {};
+      
+      // Populate form with current data
+      document.getElementById('editName').value = userData.name || '';
+      document.getElementById('editEmail').value = userData.email || '';
+      document.getElementById('editPhone').value = userData.phone || '';
+      document.getElementById('editAadhaar').value = userData.aadhaar || '';
+      document.getElementById('editPincode').value = userData.pincode || '';
+      document.getElementById('editDistrict').value = userData.district || '';
+      document.getElementById('editAddress').value = userData.address || '';
+      document.getElementById('editLandmark').value = userData.landmark || '';
+      document.getElementById('editBio').value = userData.bio || '';
+      document.getElementById('editFarmingExperience').value = userData.farmingExperience || '';
+      document.getElementById('editFarmSize').value = userData.farmSize || '';
+      
+      // Add pincode lookup event listener
+      const pincodeInput = document.getElementById('editPincode');
+      pincodeInput.removeEventListener('input', handlePincodeChange); // Remove existing listener
+      pincodeInput.addEventListener('input', handlePincodeChange);
+      
+      modal.style.display = 'block';
+    }
+
+    function closeEditModal() {
+      const modal = document.getElementById('editProfileModal');
+      modal.style.display = 'none';
+    }
+
+    function saveProfile() {
+      const userData = JSON.parse(localStorage.getItem('userData')) || {};
+      
+      // Get form values
+      const name = document.getElementById('editName').value.trim();
+      const email = document.getElementById('editEmail').value.trim();
+      const pincode = document.getElementById('editPincode').value.trim();
+      const district = document.getElementById('editDistrict').value;
+      const address = document.getElementById('editAddress').value.trim();
+      const landmark = document.getElementById('editLandmark').value.trim();
+      const bio = document.getElementById('editBio').value.trim();
+      const farmingExperience = document.getElementById('editFarmingExperience').value;
+      const farmSize = document.getElementById('editFarmSize').value;
+      
+      // Validation
+      if (!name) {
+        alert('Please enter your full name');
+        return;
+      }
+      
+      if (pincode && !/^[0-9]{6}$/.test(pincode)) {
+        alert('Please enter a valid 6-digit pincode');
+        return;
+      }
+      
+      if (farmingExperience && (farmingExperience < 0 || farmingExperience > 100)) {
+        alert('Farming experience must be between 0 and 100 years');
+        return;
+      }
+      
+      if (farmSize && farmSize < 0) {
+        alert('Farm size cannot be negative');
+        return;
+      }
+      
+      // Update user data
+      userData.name = name;
+      userData.email = email;
+      userData.pincode = pincode;
+      userData.district = district;
+      userData.address = address;
+      userData.landmark = landmark;
+      userData.bio = bio;
+      userData.farmingExperience = farmingExperience ? parseInt(farmingExperience) : null;
+      userData.farmSize = farmSize ? parseFloat(farmSize) : null;
+      
+      // Save to localStorage
+      localStorage.setItem('userData', JSON.stringify(userData));
+      
+      // Update display
+      loadUserData();
+      
+      // Close modal
+      closeEditModal();
+      
+      // Show success message
+      alert('Profile updated successfully!');
+    }
+
+    // Pincode to location lookup
+    async function lookupPincode(pincode) {
+      if (!pincode || pincode.length !== 6) {
+        return null;
+      }
+
+      try {
+        // Using India Pincode API (free service)
+        const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+        const data = await response.json();
+        
+        if (data && data[0] && data[0].Status === 'Success' && data[0].PostOffice && data[0].PostOffice.length > 0) {
+          const postOffice = data[0].PostOffice[0];
+          return {
+            district: postOffice.District,
+            state: postOffice.State,
+            city: postOffice.Name,
+            region: postOffice.Region,
+            division: postOffice.Division
+          };
+        }
+        return null;
+      } catch (error) {
+        console.error('Pincode lookup error:', error);
+        return null;
+      }
+    }
+
+    // Auto-fill location based on pincode
+    async function handlePincodeChange() {
+      const pincodeInput = document.getElementById('editPincode');
+      const districtSelect = document.getElementById('editDistrict');
+      const pincode = pincodeInput.value.trim();
+      
+      if (pincode.length === 6) {
+        // Show loading state
+        districtSelect.disabled = true;
+        districtSelect.innerHTML = '<option value="">Looking up location...</option>';
+        
+        const location = await lookupPincode(pincode);
+        
+        if (location) {
+          // Update district dropdown
+          districtSelect.innerHTML = '<option value="">Select District</option>';
+          
+          // Add all Kerala districts
+          const keralaDistricts = [
+            'Thiruvananthapuram', 'Kollam', 'Pathanamthitta', 'Alappuzha', 
+            'Kottayam', 'Idukki', 'Ernakulam', 'Thrissur', 'Palakkad', 
+            'Malappuram', 'Kozhikode', 'Wayanad', 'Kannur', 'Kasaragod'
+          ];
+          
+          keralaDistricts.forEach(district => {
+            const option = document.createElement('option');
+            option.value = district;
+            option.textContent = district;
+            
+            // Auto-select if it matches the detected district
+            if (location.district && location.district.toLowerCase().includes(district.toLowerCase())) {
+              option.selected = true;
+            }
+            
+            districtSelect.appendChild(option);
+          });
+          
+          // Show success message
+          showPincodeMessage(`Location detected: ${location.district}, ${location.state}`, 'success');
+          
+        } else {
+          // Reset dropdown if lookup failed
+          districtSelect.innerHTML = '<option value="">Select District</option>';
+          keralaDistricts.forEach(district => {
+            const option = document.createElement('option');
+            option.value = district;
+            option.textContent = district;
+            districtSelect.appendChild(option);
+          });
+          
+          showPincodeMessage('Location not found for this pincode', 'error');
+        }
+        
+        districtSelect.disabled = false;
+      } else if (pincode.length > 0) {
+        showPincodeMessage('Please enter a valid 6-digit pincode', 'error');
+      }
+    }
+
+    // Show pincode lookup message
+    function showPincodeMessage(message, type) {
+      // Remove existing message
+      const existingMessage = document.getElementById('pincodeMessage');
+      if (existingMessage) {
+        existingMessage.remove();
+      }
+      
+      // Create new message
+      const messageDiv = document.createElement('div');
+      messageDiv.id = 'pincodeMessage';
+      messageDiv.style.cssText = `
+        margin-top: 4px;
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        border-radius: 4px;
+        ${type === 'success' ? 'background: #d4edda; color: #155724; border: 1px solid #c3e6cb;' : 'background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;'}
+      `;
+      messageDiv.textContent = message;
+      
+      // Insert after pincode input
+      const pincodeInput = document.getElementById('editPincode');
+      pincodeInput.parentNode.insertBefore(messageDiv, pincodeInput.nextSibling);
+      
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        if (messageDiv.parentNode) {
+          messageDiv.remove();
+        }
+      }, 5000);
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('editProfileModal');
+      if (event.target === modal) {
+        closeEditModal();
+      }
+    }
+
+    // Initialize dashboard
+    loadUserData();
+    
+    // Auto-detect location on page load (if permission already granted)
+    window.addEventListener('load', () => {
+      // Check if we have a recent location (less than 1 hour old)
+      const userData = JSON.parse(localStorage.getItem('userData')) || {};
+      const lastLocationTime = userData.lastLocationTime || 0;
+      const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
+      
+      if (!userData.currentLocation || (Date.now() - lastLocationTime) > oneHour) {
+        // Try to get location automatically (user will be prompted for permission)
+        setTimeout(() => {
+          getCurrentLocation();
+        }, 1000);
+      }
+    });
+
+    // Allow Enter key to add crop
+    document.getElementById('newCropInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        addCrop();
+      }
+    });
+
+  </script>
+</body>
+</html>
