@@ -1,4 +1,3 @@
-import os
 import requests
 from flask import Flask, request, jsonify, render_template
 
@@ -7,26 +6,24 @@ from flask import Flask, request, jsonify, render_template
 # -------------------------
 APP_TITLE = "Haritha Chat (Flask)"
 API_BASE = "https://generativelanguage.googleapis.com/v1beta"
-DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
-VOICE_API_URL = os.getenv("VOICE_API_URL", "")
-VOICE_API_KEY = os.getenv("VOICE_API_KEY", "")
+DEFAULT_MODEL = "gemini-2.0-flash"
+
+# Hardcoded APIs for testing
+GEMINI_API_KEY = "AIzaSyBGB7lHbfqCQqDBDiGnGJK_FigQQEidT1Q"
+VOICE_API_URL = "https://soniox.com/"
+VOICE_API_KEY = "f9c49e723255a24404d570c570f71470b23a715d03949924705e40ddc575b110"
 
 # -------------------------
 # Flask app
 # -------------------------
 app = Flask(__name__)
 
-
 # -------------------------
 # Helper Functions
 # -------------------------
 def get_api_key() -> str:
-    """Return Gemini API key from environment."""
-    key = os.getenv("AIzaSyBGB7lHbfqCQqDBDiGnGJK_FigQQEidT1Q")
-    if not key:
-        raise RuntimeError("GEMINI_API_KEY environment variable not set!")
-    return key
-
+    """Return hardcoded Gemini API key."""
+    return GEMINI_API_KEY
 
 # -------------------------
 # Routes
@@ -47,18 +44,16 @@ def api_chat():
     history = (data or {}).get("history", [])  # list of {role, content}
     model = (data or {}).get("model", DEFAULT_MODEL)
     lang = (data or {}).get("lang", "en").lower()
+    images = (data or {}).get("images", [])
 
     if not user_message:
         return jsonify({"error": "'message' is required"}), 400
 
-    try:
-        api_key = get_api_key()
-    except RuntimeError as e:
-        return jsonify({"error": str(e)}), 401
+    api_key = get_api_key()
 
     # Convert chat history into Gemini contents format
     contents = []
-    for msg in history[-10:]:  # limit history to last 10 messages
+    for msg in history[-10:]:
         role = msg.get("role")
         txt = msg.get("content", "")
         if not txt:
@@ -67,7 +62,16 @@ def api_chat():
             "role": "user" if role == "user" else "model",
             "parts": [{"text": txt}]
         })
-    contents.append({"role": "user", "parts": [{"text": user_message}]})
+
+    # Build user turn with optional images
+    user_parts = [{"text": user_message}]
+    for img in (images or [])[:4]:
+        mime = (img or {}).get("mime") or (img or {}).get("mimeType")
+        b64 = (img or {}).get("data")
+        if mime and b64:
+            user_parts.append({"inlineData": {"mimeType": mime, "data": b64}})
+
+    contents.append({"role": "user", "parts": user_parts})
 
     # System prompt
     if lang == "ml":
@@ -124,28 +128,18 @@ def api_chat():
 @app.route("/api/transcribe", methods=["POST"])
 def api_transcribe():
     """
-    Proxies audio to an external Speech-to-Text API.
+    Proxies audio to Soniox Speech-to-Text API.
     Accepts multipart audio or raw body.
-    Query or form param 'lang' chooses language code ('en' or 'ml').
     """
-    if not VOICE_API_URL:
-        return jsonify({"error": "VOICE_API_URL not configured"}), 500
-
     lang = (request.args.get("lang") or request.form.get("lang") or "en").lower()
-
-    files = None
-    headers = {}
+    headers = {"Authorization": f"Bearer {VOICE_API_KEY}"}
     data = {"lang": lang}
-    if VOICE_API_KEY:
-        headers["Authorization"] = f"Bearer {VOICE_API_KEY}"
 
     try:
         if "audio" in request.files:
             audio_file = request.files["audio"]
-            files = {
-                "audio": (audio_file.filename or "audio.webm", audio_file.stream,
-                          audio_file.mimetype or "application/octet-stream")
-            }
+            files = {"audio": (audio_file.filename or "audio.webm", audio_file.stream,
+                               audio_file.mimetype or "application/octet-stream")}
             resp = requests.post(VOICE_API_URL, data=data, files=files, headers=headers, timeout=60)
         else:
             raw = request.get_data()
@@ -170,5 +164,5 @@ def api_transcribe():
 # Run App
 # -------------------------
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", "5000"))
+    port = 5000
     app.run(host="0.0.0.0", port=port, debug=False)

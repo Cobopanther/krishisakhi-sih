@@ -17,6 +17,13 @@
     .brand { font-weight: 700; margin-bottom: 12px; }
     .input { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(21,85,60,0.35); margin: 6px 0; }
     .btn { padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(21,85,60,0.35); background: #fff; cursor: pointer; }
+    /* Animated toggle switch */
+    .switch { position: relative; display: inline-block; width: 56px; height: 30px; vertical-align: middle; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background: #d1fae5; border: 1px solid rgba(21,85,60,0.35); transition: background 0.25s ease; border-radius: 999px; }
+    .slider:before { content: ""; position: absolute; height: 24px; width: 24px; left: 3px; top: 2px; background-color: #fff; border: 1px solid rgba(21,85,60,0.35); transition: transform 0.25s ease; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    input:checked + .slider { background: linear-gradient(135deg, #22c55e, #16a34a); }
+    input:checked + .slider:before { transform: translateX(26px); }
     .main { display: flex; flex-direction: column; height: 100vh; }
     .messages { flex: 1; overflow-y: auto; padding: 20px; }
     .bubble { max-width: 900px; margin: 0 auto 12px auto; display: grid; grid-template-columns: 40px 1fr; gap: 10px; }
@@ -33,19 +40,11 @@
   <div class="container">
     <aside class="sidebar">
       <div class="brand">Haritha Chat 🌿</div>
-      <label>Model</label>
-      <select id="model" class="input">
-        <option value="gemini-2.0-flash" selected>gemini-2.0-flash</option>
-        <option value="gemini-1.5-flash">gemini-1.5-flash</option>
-        <option value="gemini-1.5-pro">gemini-1.5-pro</option>
-      </select>
-      <label>Temperature</label>
-      <input id="temp" type="number" step="0.1" min="0" max="1.5" value="0.7" class="input" />
-      <div style="margin-top:8px">
-        <label style="display:block;margin-bottom:6px">Malayalam</label>
-        <label class="btn" style="display:flex;align-items:center;gap:8px;">
+      <div style="margin-top:8px; display:flex; align-items:center; justify-content: space-between; gap:10px;">
+        <div style="font-weight:600;">Malayalam</div>
+        <label class="switch" title="Toggle Malayalam">
           <input id="langToggle" type="checkbox" />
-          <span>Use Malayalam (ml)</span>
+          <span class="slider"></span>
         </label>
       </div>
       <button id="newChat" class="btn" style="margin-top:8px">+ New chat</button>
@@ -61,9 +60,13 @@
       <div class="composer">
         <form class="composer-inner" id="composerForm">
           <button type="button" id="micBtn" class="btn" title="Speak"><span id="micIcon">🎤</span></button>
+          <input type="file" id="imageInput" accept="image/*" multiple style="display:none" />
+          <button type="button" id="imageBtn" class="btn" title="Attach images">🖼️</button>
           <textarea id="prompt" rows="1" placeholder="Message Haritha…"></textarea>
           <button class="send" type="submit">Send</button>
         </form>
+      </div>
+      <div id="imagePreview" style="max-width:900px;margin:0 auto 10px auto;display:flex;gap:8px;flex-wrap:wrap;padding:0 14px"></div>
       </div>
     </div>
   </div>
@@ -72,13 +75,14 @@
     const messagesEl = document.getElementById('messages');
     const formEl = document.getElementById('composerForm');
     const promptEl = document.getElementById('prompt');
-    const modelEl = document.getElementById('model');
-    const tempEl = document.getElementById('temp');
     const newChatBtn = document.getElementById('newChat');
     const langToggle = document.getElementById('langToggle');
     const micBtn = document.getElementById('micBtn');
     const micIcon = document.getElementById('micIcon');
     const history = [];
+    const imageInput = document.getElementById('imageInput');
+    const imageBtn = document.getElementById('imageBtn');
+    const previewEl = document.getElementById('imagePreview');
 
     function getLang() {
       return (langToggle && langToggle.checked) ? 'ml' : 'en';
@@ -112,11 +116,13 @@
       if (!text) return;
       appendMessage('user', text);
       promptEl.value = '';
+      const imagesPayload = await collectSelectedImages();
+      clearPreview();
       try {
         const resp = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, history, model: modelEl.value, temperature: parseFloat(tempEl.value || '0.7'), lang: getLang() })
+          body: JSON.stringify({ message: text, history, lang: getLang(), images: imagesPayload })
         });
         if (!resp.ok) {
           const t = await resp.text();
@@ -185,6 +191,54 @@
         appendMessage('assistant', 'Microphone error: ' + (e?.message || e));
       }
     });
+
+    // --- Image attach & preview ---
+    imageBtn.addEventListener('click', () => imageInput.click());
+
+    imageInput.addEventListener('change', async () => {
+      clearPreview();
+      const files = Array.from(imageInput.files || []).slice(0, 4);
+      for (const f of files) {
+        const url = URL.createObjectURL(f);
+        const img = document.createElement('img');
+        img.src = url;
+        img.style.maxWidth = '120px';
+        img.style.maxHeight = '90px';
+        img.style.objectFit = 'cover';
+        img.style.border = '1px solid rgba(21,85,60,0.2)';
+        img.style.borderRadius = '8px';
+        previewEl.appendChild(img);
+      }
+    });
+
+    async function collectSelectedImages() {
+      const files = Array.from(imageInput.files || []).slice(0, 4);
+      const out = [];
+      for (const f of files) {
+        const b64 = await fileToBase64(f);
+        out.push({ mime: f.type || 'image/png', data: b64 });
+      }
+      // reset input for next round
+      imageInput.value = '';
+      return out;
+    }
+
+    function clearPreview() {
+      previewEl.innerHTML = '';
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || '');
+          const idx = result.indexOf(',');
+          resolve(idx >= 0 ? result.slice(idx + 1) : result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
   </script>
 </body>
 </html>
