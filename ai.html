@@ -311,7 +311,7 @@
     const closeSettingsBtn = document.getElementById('closeSettings');
 
     // Default Google API key (set once, if none saved). Provided by user.
-    const DEFAULT_GOOGLE_KEY = 'AIzaSyBGB7lHbfqCQqDBDiGnGJK_FigQQEidT1Q';
+    const DEFAULT_GOOGLE_KEY = 'AIzaSyBdG9vFRT2wp1zU_2UAFZXEbF4Xe4Nw4Do';
 
     function appendMessage(role, text) {
       const bubble = document.createElement('div');
@@ -361,10 +361,11 @@
       }
 
       const targetEl = appendMessage('assistant', '');
-      const model = 'gemini-2.0-flash';
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${encodeURIComponent(apiKey)}`;
+      const model = 'gemini-1.5-flash';
+      const url = https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${encodeURIComponent(apiKey)};
       const body = {
         systemInstruction: {
+          role: 'system',
           parts: [{
             text: 'You are Haritha, a helpful Kerala farming assistant. Be concise, practical, and Kerala-specific. Prefer Malayalam greetings (Namaskaram), but keep the main content in clear English. Offer actionable steps and local crop examples (paddy, coconut, pepper, banana, rubber, spices). Avoid hallucinations and state when unsure.'
           }]
@@ -383,18 +384,12 @@
       try {
         const resp = await fetch(url, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'text/event-stream',
-            'X-goog-api-key': apiKey
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body)
         });
 
         if (!resp.ok || !resp.body) {
-          let extra = '';
-          try { extra = ' ' + await resp.text(); } catch (_) {}
-          targetEl.textContent = 'Error: Unable to reach Google Gemini API. ' + resp.status + ' ' + resp.statusText + extra;
+          targetEl.textContent = 'Error: Unable to reach Google Gemini API. Check your key and network.';
           return;
         }
 
@@ -446,4 +441,3 @@
   </script>
 </body>
 </html>
-
