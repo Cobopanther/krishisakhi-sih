@@ -1089,7 +1089,36 @@
 
     async function startRecording() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // Check if getUserMedia is supported
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          const notSupportedMsg = getLang() === 'ml' 
+            ? 'ഈ ബ്രൗസറിൽ മൈക്രോഫോൺ പിന്തുണയില്ല. Chrome, Firefox, Safari ഉപയോഗിക്കുക.'
+            : 'Microphone not supported in this browser. Please use Chrome, Firefox, or Safari.';
+          appendMessage('assistant', notSupportedMsg);
+          return;
+        }
+
+        // Show permission request message
+        const permissionMsg = getLang() === 'ml' 
+          ? 'മൈക്രോഫോൺ പെർമിഷൻ അനുവദിക്കുക...'
+          : 'Requesting microphone permission...';
+        appendMessage('assistant', permissionMsg);
+        
+        // Request microphone permission with explicit options
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        });
+        
+        // Show permission granted message
+        const grantedMsg = getLang() === 'ml' 
+          ? 'മൈക്രോഫോൺ പെർമിഷൻ അനുവദിച്ചു! റെക്കോർഡിംഗ് ആരംഭിക്കുന്നു...'
+          : 'Microphone permission granted! Starting recording...';
+        appendMessage('assistant', grantedMsg);
+        
         mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
         chunks = [];
         
@@ -1147,9 +1176,27 @@
         appendMessage('assistant', recordingMsg);
         
       } catch (error) {
-        const errorMsg = getLang() === 'ml' 
-          ? 'മൈക്രോഫോൺ ആക്സസ് നിരസിച്ചു. ദയവായി മൈക്രോഫോൺ പെർമിഷൻ നൽകുക.'
-          : 'Microphone access denied. Please allow microphone permission.';
+        console.error('Microphone error:', error);
+        
+        let errorMsg = '';
+        if (error.name === 'NotAllowedError') {
+          errorMsg = getLang() === 'ml' 
+            ? 'മൈക്രോഫോൺ പെർമിഷൻ നിരസിച്ചു. ബ്രൗസർ ടാബിലെ മൈക്രോഫോൺ ഐക്കണിൽ ക്ലിക്ക് ചെയ്ത് "Allow" തിരഞ്ഞെടുക്കുക.'
+            : 'Microphone permission denied. Click the microphone icon in the browser tab and select "Allow".';
+        } else if (error.name === 'NotFoundError') {
+          errorMsg = getLang() === 'ml' 
+            ? 'മൈക്രോഫോൺ കണ്ടെത്താൻ കഴിഞ്ഞില്ല. ഒരു മൈക്രോഫോൺ കണക്റ്റ് ചെയ്തിട്ടുണ്ടെന്ന് ഉറപ്പാക്കുക.'
+            : 'No microphone found. Please make sure a microphone is connected.';
+        } else if (error.name === 'NotSupportedError') {
+          errorMsg = getLang() === 'ml' 
+            ? 'ഈ ബ്രൗസറിൽ മൈക്രോഫോൺ പിന്തുണയില്ല. Chrome, Firefox, Safari ഉപയോഗിക്കുക.'
+            : 'Microphone not supported in this browser. Please use Chrome, Firefox, or Safari.';
+        } else {
+          errorMsg = getLang() === 'ml' 
+            ? 'മൈക്രോഫോൺ പിശക്: ' + error.message
+            : 'Microphone error: ' + error.message;
+        }
+        
         appendMessage('assistant', errorMsg);
         isRecording = false;
         micBtn.textContent = '🎤';
@@ -1170,11 +1217,21 @@
     micBtn.addEventListener('click', async () => {
       try {
         if (!isRecording) {
+          // Check if we're on HTTPS or localhost
+          if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            const httpsMsg = getLang() === 'ml' 
+              ? 'മൈക്രോഫോൺ ഉപയോഗിക്കാൻ HTTPS ആവശ്യമാണ്. ദയവായി HTTPS URL ഉപയോഗിക്കുക.'
+              : 'HTTPS is required for microphone access. Please use HTTPS URL.';
+            appendMessage('assistant', httpsMsg);
+            return;
+          }
+          
           await startRecording();
         } else {
           stopRecording();
         }
       } catch (e) {
+        console.error('Mic button error:', e);
         const errorMsg = getLang() === 'ml' 
           ? 'മൈക്രോഫോൺ പിശക്: ' + (e?.message || e)
           : 'Microphone error: ' + (e?.message || e);

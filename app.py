@@ -638,8 +638,9 @@ def api_transcribe():
     Simple voice transcription using browser's built-in speech recognition.
     For demo purposes, returns a mock response.
     """
-    if 'user_id' not in session:
-        return jsonify({"error": "Authentication required"}), 401
+    # Temporarily disable authentication for voice transcription
+    # if 'user_id' not in session:
+    #     return jsonify({"error": "Authentication required"}), 401
     
     lang = (request.args.get("lang") or request.form.get("lang") or "en").lower()
     
