@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haritha-AI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url('indx.jpg') no-repeat center center/cover;
+      position: relative;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 10%;
+      left: 5%;
+      background-color: #6a9e42;
+      padding: 20px 40px;
+      border-radius: 40px;
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay span {
+      font-size: 1rem;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .overlay .farm-text {
+      font-size: 3rem;
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+    }
+
+    .ai-badge {
+      position: absolute;
+      bottom: 20%;
+      left: 20%;
+      background: linear-gradient(to right, #41a05f, #61ce70);
+      color: white;
+      font-size: 1.5rem;
+      padding: 10px 25px;
+      border-radius: 20px;
+      font-weight: bold;
+      box-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+    }
+
+    /* Button animation for effect */
+    .ai-badge:hover {
+      transform: scale(1.1);
+      transition: 0.3s ease;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Left "We Farm" Box -->
+  <div class="overlay">
+    <div>
+      <span>We</span>
+      <div class="farm-text">Farm</div>
+    </div>
+  </div>
+
+  <!-- AI Chatbot Badge -->
+  <div class="ai-badge" onclick="showMessage()">Haritha-AI</div>
+
+  <script>
+    function showMessage() {
+      alert("Welcome to Haritha-AI 🌱! Your smart farming assistant.");
+    }
+  </script>
+</body>
+</html>

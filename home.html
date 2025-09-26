@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haritha Kerala</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(180deg, rgba(12, 53, 33, 0.8), rgba(33, 94, 60, 0.75)),
+        url('indx.jpg') no-repeat center center/cover;
+      color: #0a2a1d;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar with profile and nav */
+    .topbar {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #f5fff8;
+    }
+
+    .pfp {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffd166, #95d5b2);
+      color: #1b4d3e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    .profile .name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .nav {
+      display: flex;
+      gap: 14px;
+    }
+
+    .nav a {
+      color: #e9fff0;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 10px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .nav a:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* Center card with three buttons */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 720px;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      border-radius: 18px;
+      padding: 28px;
+      border: 1px solid rgba(6, 77, 40, 0.2);
+      backdrop-filter: blur(6px);
+    }
+
+    .card h1 {
+      color: #134e4a;
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .card p {
+      color: #275d4b;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 16px 14px;
+      border-radius: 14px;
+      text-decoration: none;
+      color: #0d3b2e;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      background: linear-gradient(135deg, #a7f3d0 0%, #80ed99 100%);
+      border: 1px solid rgba(3, 84, 63, 0.25);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+      filter: saturate(1.05);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    }
+
+    /* Sections */
+    section {
+      padding: 40px 20px;
+      color: #e8fff2;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .section-sub {
+      text-align: center;
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      .button-grid {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 22px;
+      }
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const root = document.documentElement;
+      root.style.setProperty('--loaded', '1');
+    });
+  </script>
+  <style>
+    body { font-family: "Poppins", Arial, sans-serif; }
+  </style>
+  <meta name="description" content="Haritha Kerala - AI Assistant, Market Prices, Activity Tracker with a Kerala warmth theme.">
+</head>
+<body>
+  <header class="topbar" id="home">
+    <div class="profile">
+      <div class="pfp" aria-hidden="true">A</div>
+      <div class="name" title="Profile name">Anand</div>
+    </div>
+    <nav class="nav" aria-label="Primary">
+      <a href="home.html">Home</a>
+      <a href="#contact">Contact Us</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="card" role="region" aria-label="Main options">
+      <h1>Haritha Kerala</h1>
+      <p>Experience the warmth of Kerala — backwaters, coconut groves, and lush farms.</p>
+      <div class="button-grid">
+        <a class="btn" href="ai.html" title="Open AI Assistant">AI Assistant</a>
+        <a class="btn" href="#market" title="View Market Prices">Market Price</a>
+        <a class="btn" href="#activity" title="Open Activity Tracker">Activity Tracker</a>
+      </div>
+    </div>
+  </main>
+
+  <section id="market">
+    <div class="section-title">Market Prices</div>
+    <div class="section-sub">Coming soon: Real-time prices for spices, coconuts, and produce.</div>
+  </section>
+
+  <section id="activity">
+    <div class="section-title">Activity Tracker</div>
+    <div class="section-sub">Track your daily farm activities and progress in one place.</div>
+  </section>
+
+  <section id="contact">
+    <div class="section-title">Contact Us</div>
+    <div class="section-sub">Have questions? Reach out at <a href="mailto:support@haritha.ai" style="color:#b7ffe0;text-decoration:underline;">support@haritha.ai</a></div>
+  </section>
+</body>
+</html>

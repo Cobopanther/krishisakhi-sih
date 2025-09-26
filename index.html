@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Krishi Sakhi - Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    :root {
+      --green-dark: #1e7f3e;
+      --green: #2e9f4f;
+      --green-light: #6dcf7e;
+      --earth: #8b6f47;
+      --bg: #f3f7f3;
+      --text: #1b1b1b;
+      --muted: #6b6b6b;
+      --card: #ffffff;
+      --ring: rgba(46, 159, 79, 0.35);
+    }
+
+    body.dark {
+      --bg: #0f1510;
+      --text: #e8f2ea;
+      --muted: #a7b8aa;
+      --card: #141d15;
+      --ring: rgba(109, 207, 126, 0.3);
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, rgba(30,127,62,0.2), rgba(141,111,71,0.15)), url('indx.jpg') center/cover no-repeat fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--text);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 980px;
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+      overflow: hidden;
+      border: 1px solid rgba(46,159,79,0.15);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: linear-gradient(90deg, var(--green-dark), var(--green));
+      color: #fff;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: bold;
+    }
+
+    .brand .leaf {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2e9f4f, #6dcf7e);
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .control-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      text-decoration: none;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 0;
+    }
+
+    .hero {
+      background: linear-gradient(180deg, rgba(46,159,79,0.12), rgba(30,127,62,0.12));
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 14px;
+      border-right: 1px solid rgba(46,159,79,0.12);
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      color: var(--green-dark);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+    }
+
+    .hero p {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .forms {
+      padding: 28px;
+      background: var(--card);
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+      background: var(--bg);
+      padding: 6px;
+      border-radius: 10px;
+      border: 1px solid rgba(46,159,79,0.15);
+    }
+
+    .tab-btn {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(180deg, #fff, rgba(255,255,255,0.6));
+      border: 1px solid rgba(46,159,79,0.35);
+      box-shadow: 0 2px 8px rgba(46,159,79,0.12);
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    input, select {
+      width: 100%;
+      margin-top: 6px;
+      padding: 12px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(27,27,27,0.15);
+      outline: none;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    input:focus, select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 4px var(--ring);
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: -4px;
+    }
+
+    .submit {
+      margin-top: 6px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: none;
+      color: #fff;
+      background: linear-gradient(90deg, var(--green-dark), var(--green));
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .alt {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .notice {
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .footer {
+      padding: 10px 20px;
+      background: var(--bg);
+      border-top: 1px solid rgba(46,159,79,0.12);
+      color: var(--muted);
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .link {
+      color: var(--green-dark);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    @media (max-width: 880px) {
+      .content { grid-template-columns: 1fr; }
+      .hero { border-right: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="application">
+    <div class="header">
+      <div class="brand">
+        <div class="leaf" aria-hidden="true">🌿</div>
+        <div>
+          <div id="appTitle">Krishi Sakhi</div>
+          <div style="font-size: 0.8rem; opacity: 0.9">AI-powered Farming Assistant</div>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="langToggle" class="control-btn" aria-label="Switch Language">മലയാളം</button>
+        <button id="themeToggle" class="control-btn" aria-label="Toggle Dark Mode">🌙</button>
+        <a class="control-btn" href="home.html">Home</a>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="hero">
+        <h1 id="heroTitle">Grow smarter with Kerala's rhythms</h1>
+        <p id="heroDesc">Personalized insights for soil, weather, crops, and markets—right at your fingertips.</p>
+        <p class="notice" id="noticeText">By continuing, you agree to our Terms and Privacy Policy.</p>
+      </div>
+      <div class="forms">
+        <div class="tabs" role="tablist">
+          <button id="tabLogin" class="tab-btn active" role="tab" aria-selected="true">Login</button>
+          <button id="tabSignup" class="tab-btn" role="tab" aria-selected="false">Create Account</button>
+        </div>
+
+        <form id="loginForm" aria-labelledby="tabLogin">
+          <div>
+            <label for="loginPhone" id="labelLoginPhone">Phone Number</label>
+            <input id="loginPhone" name="phone" type="tel" inputmode="numeric" placeholder="10-digit phone" required pattern="^[0-9]{10}$">
+            <div class="hint" id="hintLoginPhone">Enter your registered 10-digit mobile number.</div>
+          </div>
+          <div>
+            <label for="loginPassword" id="labelLoginPassword">Password</label>
+            <input id="loginPassword" name="password" type="password" placeholder="••••••••" required minlength="6">
+          </div>
+          <button type="submit" class="submit" id="btnLogin">Login</button>
+          <div class="alt" id="altToSignup">New here? Create an account</div>
+        </form>
+
+        <form id="signupForm" aria-labelledby="tabSignup" style="display: none;">
+          <div class="row">
+            <div>
+              <label for="name" id="labelName">Full Name</label>
+              <input id="name" name="name" type="text" placeholder="Your full name" required>
+            </div>
+            <div>
+              <label for="phone" id="labelPhone">Phone Number</label>
+              <input id="phone" name="phone" type="tel" inputmode="numeric" placeholder="10-digit phone" required pattern="^[0-9]{10}$">
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="email" id="labelEmail">Email (optional)</label>
+              <input id="email" name="email" type="email" placeholder="name@example.com">
+            </div>
+            <div>
+              <label for="aadhaar" id="labelAadhaar">Aadhaar Number</label>
+              <input id="aadhaar" name="aadhaar" type="text" inputmode="numeric" placeholder="12-digit Aadhaar" required pattern="^[0-9]{12}$">
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="pincode" id="labelPincode">Pincode</label>
+              <input id="pincode" name="pincode" type="text" inputmode="numeric" placeholder="6-digit pincode" required pattern="^[0-9]{6}$">
+            </div>
+            <div>
+              <label for="district" id="labelDistrict">District</label>
+              <select id="district" name="district" required>
+                <option value="">Select</option>
+                <option>Thiruvananthapuram</option>
+                <option>Kollam</option>
+                <option>Pathanamthitta</option>
+                <option>Alappuzha</option>
+                <option>Kottayam</option>
+                <option>Idukki</option>
+                <option>Ernakulam</option>
+                <option>Thrissur</option>
+                <option>Palakkad</option>
+                <option>Malappuram</option>
+                <option>Kozhikode</option>
+                <option>Wayanad</option>
+                <option>Kannur</option>
+                <option>Kasaragod</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="password" id="labelPassword">Password</label>
+              <input id="password" name="password" type="password" placeholder="Min 6 characters" required minlength="6">
+            </div>
+            <div>
+              <label for="confirm" id="labelConfirm">Confirm Password</label>
+              <input id="confirm" name="confirm" type="password" placeholder="Re-enter password" required minlength="6">
+            </div>
+          </div>
+          <button type="submit" class="submit" id="btnSignup">Create Account</button>
+          <div class="alt" id="altToLogin">Already have an account? Login</div>
+        </form>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div id="footerText">Designed for Kerala farmers with care</div>
+      <div>© 2025 Krishi Sakhi</div>
+    </div>
+  </div>
+
+  <script>
+    const qs = (s) => document.querySelector(s);
+    const body = document.body;
+
+    // Theme
+    const themeToggle = qs('#themeToggle');
+    const savedTheme = localStorage.getItem('krishi_theme') || 'light';
+    if (savedTheme === 'dark') body.classList.add('dark');
+    themeToggle.textContent = body.classList.contains('dark') ? '☀️' : '🌙';
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      const mode = body.classList.contains('dark') ? 'dark' : 'light';
+      localStorage.setItem('krishi_theme', mode);
+      themeToggle.textContent = mode === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Tabs
+    const tabLogin = qs('#tabLogin');
+    const tabSignup = qs('#tabSignup');
+    const loginForm = qs('#loginForm');
+    const signupForm = qs('#signupForm');
+
+    function showLogin() {
+      tabLogin.classList.add('active');
+      tabSignup.classList.remove('active');
+      loginForm.style.display = '';
+      signupForm.style.display = 'none';
+    }
+
+    function showSignup() {
+      tabSignup.classList.add('active');
+      tabLogin.classList.remove('active');
+      signupForm.style.display = '';
+      loginForm.style.display = 'none';
+    }
+
+    tabLogin.addEventListener('click', showLogin);
+    tabSignup.addEventListener('click', showSignup);
+    qs('#altToSignup').addEventListener('click', showSignup);
+    qs('#altToLogin').addEventListener('click', showLogin);
+
+    // Language (English / Malayalam)
+    const langToggle = qs('#langToggle');
+    const strings = {
+      en: {
+        heroTitle: "Grow smarter with Kerala's rhythms",
+        heroDesc: "Personalized insights for soil, weather, crops, and markets—right at your fingertips.",
+        noticeText: "By continuing, you agree to our Terms and Privacy Policy.",
+        tabLogin: "Login",
+        tabSignup: "Create Account",
+        labelLoginPhone: "Phone Number",
+        hintLoginPhone: "Enter your registered 10-digit mobile number.",
+        labelLoginPassword: "Password",
+        btnLogin: "Login",
+        altToSignup: "New here? Create an account",
+        labelName: "Full Name",
+        labelPhone: "Phone Number",
+        labelEmail: "Email (optional)",
+        labelAadhaar: "Aadhaar Number",
+        labelPincode: "Pincode",
+        labelDistrict: "District",
+        labelPassword: "Password",
+        labelConfirm: "Confirm Password",
+        btnSignup: "Create Account",
+        altToLogin: "Already have an account? Login",
+        footerText: "Designed for Kerala farmers with care"
+      },
+      ml: {
+        heroTitle: "കേരളത്തിന്റെ താളത്തിൽ ബുധ്ധിപൂർവ്വം കൃഷി",
+        heroDesc: "മണ്ണ്, കാലാവസ്ഥ, വിളകൾ, വിപണി എന്നിവയ്ക്കായുള്ള വ്യക്തിഗത നിർദ്ദേശങ്ങൾ.",
+        noticeText: "തുടരുന്നതിലൂടെ നിങ്ങൾ വ്യവസ്ഥകളും സ്വകാര്യതാനയവും അംഗീകരിക്കുന്നു.",
+        tabLogin: "ലോഗിൻ",
+        tabSignup: "അക്കൗണ്ട് സൃഷ്ടിക്കുക",
+        labelLoginPhone: "ഫോൺ നമ്പർ",
+        hintLoginPhone: "രജിസ്റ്റർ ചെയ്ത 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക.",
+        labelLoginPassword: "പാസ്‌വേഡ്",
+        btnLogin: "ലോഗിൻ",
+        altToSignup: "ഇവിടെ പുതുതാണോ? അക്കൗണ്ട് സൃഷ്ടിക്കുക",
+        labelName: "പൂർണ്ണ പേര്",
+        labelPhone: "ഫോൺ നമ്പർ",
+        labelEmail: "ഇമെയിൽ (ഐച്ഛികം)",
+        labelAadhaar: "ആധാർ നമ്പർ",
+        labelPincode: "പിന്‍കോഡ്",
+        labelDistrict: "ജില്ല",
+        labelPassword: "പാസ്‌വേഡ്",
+        labelConfirm: "പാസ്‌വേഡ് സ്ഥിരീകരിക്കുക",
+        btnSignup: "അക്കൗണ്ട് സൃഷ്ടിക്കുക",
+        altToLogin: "അക്കൗണ്ട് ഉണ്ടോ? ലോഗിൻ ചെയ്യുക",
+        footerText: "കേരളത്തിലെ കർഷകർക്ക് വേണ്ടി സ്നേഹത്തോടെ"
+      }
+    };
+
+    function setLang(l) {
+      const t = strings[l];
+      qs('#heroTitle').textContent = t.heroTitle;
+      qs('#heroDesc').textContent = t.heroDesc;
+      qs('#noticeText').textContent = t.noticeText;
+      qs('#tabLogin').textContent = t.tabLogin;
+      qs('#tabSignup').textContent = t.tabSignup;
+      qs('#labelLoginPhone').textContent = t.labelLoginPhone;
+      qs('#hintLoginPhone').textContent = t.hintLoginPhone;
+      qs('#labelLoginPassword').textContent = t.labelLoginPassword;
+      qs('#btnLogin').textContent = t.btnLogin;
+      qs('#altToSignup').textContent = t.altToSignup;
+      qs('#labelName').textContent = t.labelName;
+      qs('#labelPhone').textContent = t.labelPhone;
+      qs('#labelEmail').textContent = t.labelEmail;
+      qs('#labelAadhaar').textContent = t.labelAadhaar;
+      qs('#labelPincode').textContent = t.labelPincode;
+      qs('#labelDistrict').textContent = t.labelDistrict;
+      qs('#labelPassword').textContent = t.labelPassword;
+      qs('#labelConfirm').textContent = t.labelConfirm;
+      qs('#btnSignup').textContent = t.btnSignup;
+      qs('#altToLogin').textContent = t.altToLogin;
+      qs('#footerText').textContent = t.footerText;
+      langToggle.textContent = l === 'en' ? 'മലയാളം' : 'English';
+      localStorage.setItem('krishi_lang', l);
+      document.documentElement.lang = l === 'en' ? 'en' : 'ml';
+    }
+
+    const savedLang = localStorage.getItem('krishi_lang') || 'en';
+    setLang(savedLang);
+    langToggle.addEventListener('click', () => {
+      const next = (localStorage.getItem('krishi_lang') || 'en') === 'en' ? 'ml' : 'en';
+      setLang(next);
+    });
+
+    // Demo-only submit handlers
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const phone = qs('#loginPhone').value.trim();
+      const pwd = qs('#loginPassword').value;
+      if (!/^[0-9]{10}$/.test(phone)) { alert('Enter a valid 10-digit phone number'); return; }
+      if (pwd.length < 6) { alert('Password must be at least 6 characters'); return; }
+      alert('Logged in (demo)');
+      window.location.href = 'index.html';
+    });
+
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const pw = qs('#password').value;
+      const cf = qs('#confirm').value;
+      if (pw !== cf) { alert('Passwords do not match'); return; }
+      alert('Account created (demo)');
+      showLogin();
+    });
+  </script>
+</body>
+</html> 
