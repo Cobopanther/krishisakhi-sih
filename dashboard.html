@@ -683,7 +683,6 @@
         <div class="section-title">Quick Actions</div>
         <div style="display: grid; gap: 12px;">
           <a href="http://127.0.0.1:5000" class="btn">Ask AI Assistant</a>
-          <a href="#market" class="btn btn-secondary">Check Market Prices</a>
           <a href="#activity" class="btn btn-secondary">View Activity Log</a>
           <button class="btn btn-secondary" onclick="editProfile()">Edit Profile</button>
         </div>
@@ -800,6 +799,24 @@
     </div>
   </div>
 
+  <!-- Profile Picture Display Modal -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content" style="max-width: 400px; text-align: center;">
+      <div class="modal-header">
+        <div class="modal-title">Profile Picture</div>
+        <span class="close" onclick="closeProfileModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div id="modalProfilePic" style="width: 200px; height: 200px; margin: 0 auto 20px; border-radius: 50%; background: linear-gradient(135deg, var(--green), var(--green-light)); display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white; position: relative; overflow: hidden;">
+          <div id="modalProfileInitial" style="font-weight: 800;">A</div>
+          <img id="modalProfileImage" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: none;" alt="Profile Picture">
+        </div>
+        <p style="color: var(--text); margin-bottom: 20px;">To change your profile picture, use the "Edit Profile" option.</p>
+        <button class="btn" onclick="closeProfileModal(); editProfile();" style="width: 100%;">Edit Profile</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Theme toggle
     const themeToggle = document.getElementById('themeToggle');
@@ -821,7 +838,7 @@
     const photoInput = document.getElementById('photoInput');
 
     profilePic.addEventListener('click', () => {
-      photoInput.click();
+      showProfileModal();
     });
 
     photoInput.addEventListener('change', (e) => {
@@ -833,6 +850,13 @@
           profileImage.style.display = 'block';
           profileInitial.style.display = 'none';
           localStorage.setItem('profileImage', e.target.result);
+          
+          // Trigger storage event to notify home page
+          window.dispatchEvent(new StorageEvent('storage', {
+            key: 'profileImage',
+            newValue: e.target.result,
+            oldValue: localStorage.getItem('profileImage')
+          }));
         };
         reader.readAsDataURL(file);
       }
@@ -1201,6 +1225,33 @@
       modal.style.display = 'none';
     }
 
+    function showProfileModal() {
+      const modal = document.getElementById('profileModal');
+      const modalProfileImage = document.getElementById('modalProfileImage');
+      const modalProfileInitial = document.getElementById('modalProfileInitial');
+      const savedImage = localStorage.getItem('profileImage');
+      
+      if (savedImage) {
+        modalProfileImage.src = savedImage;
+        modalProfileImage.style.display = 'block';
+        modalProfileInitial.style.display = 'none';
+      } else {
+        modalProfileImage.style.display = 'none';
+        modalProfileInitial.style.display = 'block';
+        // Set initial based on name
+        const userData = JSON.parse(localStorage.getItem('userData')) || {};
+        const name = userData.name || 'Anand';
+        modalProfileInitial.textContent = name.charAt(0).toUpperCase();
+      }
+      
+      modal.style.display = 'block';
+    }
+
+    function closeProfileModal() {
+      const modal = document.getElementById('profileModal');
+      modal.style.display = 'none';
+    }
+
     function saveProfile() {
       const userData = JSON.parse(localStorage.getItem('userData')) || {};
       
@@ -1388,11 +1439,36 @@
 
     // Close modal when clicking outside
     window.onclick = function(event) {
-      const modal = document.getElementById('editProfileModal');
-      if (event.target === modal) {
+      const editModal = document.getElementById('editProfileModal');
+      const profileModal = document.getElementById('profileModal');
+      if (event.target === editModal) {
         closeEditModal();
       }
+      if (event.target === profileModal) {
+        closeProfileModal();
+      }
     }
+
+    // Listen for storage changes to update profile picture when changed in home page
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'profileImage' && e.newValue) {
+        const profileImage = document.getElementById('profileImage');
+        const profileInitial = document.getElementById('profileInitial');
+        
+        profileImage.src = e.newValue;
+        profileImage.style.display = 'block';
+        profileInitial.style.display = 'none';
+        
+        // Also update the profile modal if it's open
+        const modalProfileImage = document.getElementById('modalProfileImage');
+        const modalProfileInitial = document.getElementById('modalProfileInitial');
+        if (modalProfileImage && modalProfileInitial) {
+          modalProfileImage.src = e.newValue;
+          modalProfileImage.style.display = 'block';
+          modalProfileInitial.style.display = 'none';
+        }
+      }
+    });
 
     // Initialize dashboard
     loadUserData();
