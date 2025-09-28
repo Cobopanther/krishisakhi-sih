@@ -15,31 +15,33 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* greenish-white farming background */
+            background: linear-gradient(135deg, #f7fff7 0%, #eaf8ee 50%, #ddf3e0 100%);
             min-height: 100vh;
-            color: #333;
+            color: #13321f;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+            color: #fff; /* default text color for dashboard area */
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(90deg, rgba(46,159,79,0.98), rgba(30,127,62,0.95));
+            color: white;
             border-radius: 20px;
             padding: 20px 30px;
             margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 40px rgba(46,159,79,0.08);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .header h1 {
-            color: #2d3748;
+            color: #fff;
             font-size: 2rem;
             font-weight: 700;
         }
@@ -53,7 +55,7 @@
         .user-avatar {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #22c55e, #16a34a);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -61,6 +63,7 @@
             color: white;
             font-weight: 600;
             font-size: 1.2rem;
+            box-shadow: 0 6px 18px rgba(34,197,94,0.12);
         }
 
         .nav-links {
@@ -70,7 +73,7 @@
 
         .nav-links a {
             text-decoration: none;
-            color: #4a5568;
+            color: rgba(255,255,255,0.92);
             padding: 10px 20px;
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -78,8 +81,8 @@
         }
 
         .nav-links a:hover {
-            background: #f7fafc;
-            color: #667eea;
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.95);
         }
 
         .dashboard-grid {
@@ -90,12 +93,14 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            /* Use the same strong green gradient as weather-card but slightly softened */
+            background: linear-gradient(135deg, rgba(46,159,79,0.95), rgba(30,127,62,0.95));
+            color: #fff;
             border-radius: 20px;
             padding: 25px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 40px rgba(20, 50, 20, 0.08);
             transition: transform 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.06);
         }
 
         .card:hover {
@@ -103,7 +108,7 @@
         }
 
         .card h3 {
-            color: #2d3748;
+            color: #fff;
             font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 15px;
@@ -113,7 +118,7 @@
         }
 
         .weather-card {
-            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            background: linear-gradient(135deg, rgba(46,159,79,0.98), rgba(30,127,62,0.98));
             color: white;
         }
 
@@ -131,7 +136,7 @@
         .weather-item {
             text-align: center;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.12);
             border-radius: 10px;
         }
 
@@ -149,6 +154,9 @@
         .market-prices {
             max-height: 300px;
             overflow-y: auto;
+            background: rgba(255,255,255,0.06);
+            padding: 10px;
+            border-radius: 10px;
         }
 
         .price-item {
@@ -165,12 +173,12 @@
 
         .crop-name {
             font-weight: 600;
-            color: #2d3748;
+            color: #fff;
         }
 
         .price {
             font-weight: 700;
-            color: #38a169;
+            color: #fff;
         }
 
         .farm-data {
@@ -180,14 +188,21 @@
 
         .farm-item {
             padding: 15px;
-            background: #f7fafc;
+            background: rgba(255,255,255,0.06);
             border-radius: 10px;
             margin-bottom: 10px;
         }
 
         .farm-item h4 {
-            color: #2d3748;
+            color: #fff;
             margin-bottom: 8px;
+        }
+
+        /* Haritha primary button — vivid green */
+        .haritha-btn {
+            background: linear-gradient(135deg, #34d399, #10b981) !important;
+            color: #ffffff !important;
+            box-shadow: 0 8px 20px rgba(16,185,129,0.18);
         }
 
         .farm-stats {
@@ -195,7 +210,18 @@
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             font-size: 0.9rem;
-            color: #4a5568;
+            color: #fff;
+        }
+
+        /* Ensure main card text is white for readability on green backgrounds,
+           but avoid forcing input/mini-card text which uses its own styles. */
+        .card > h3,
+        .card .crop-name,
+        .card .price,
+        .card .farm-item h4,
+        .card .weather-item .value,
+        .card .weather-item .label {
+            color: #fff;
         }
 
         .quick-actions {
@@ -205,7 +231,7 @@
         }
 
         .action-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #2e9f4f, #1e7f3e);
             color: white;
             border: none;
             padding: 15px;
@@ -219,6 +245,45 @@
             justify-content: center;
             gap: 10px;
         }
+
+    /* Mini UI cards used inside Quick Actions */
+    .mini-card {
+        background: linear-gradient(180deg, #ffffff, #f6fff7);
+        border-radius: 12px;
+        padding: 14px;
+        border: 1px solid rgba(46,159,79,0.06);
+        box-shadow: 0 6px 18px rgba(20,50,20,0.03);
+    }
+
+        .mini-card .mini-title {
+            color: #1e7f3e; /* farming green */
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+    .mini-form { display: grid; gap: 8px; }
+
+    .mini-input, .mini-select, .mini-textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(27,27,27,0.08);
+        background: #fff;
+        color: var(--text, #13321f);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+    }
+
+    .mini-textarea { min-height: 64px; resize: vertical; }
+
+    .result-box {
+        margin-top: 8px;
+        padding: 10px;
+        border-radius: 10px;
+        background: rgba(46,159,79,0.04);
+        color: #fff;
+        font-size: 0.95rem;
+    }
 
         .action-btn:hover {
             transform: translateY(-2px);
@@ -250,12 +315,12 @@
         .stat-value {
             font-size: 2rem;
             font-weight: 700;
-            color: #667eea;
+            color: #1e7f3e; /* farming green */
             margin-bottom: 5px;
         }
 
         .stat-label {
-            color: #4a5568;
+            color: #12321a; /* deep green for labels */
             font-weight: 500;
         }
 
@@ -288,10 +353,9 @@
                 <div class="user-avatar">{{ user.name[0].upper() }}</div>
                 <div>
                     <div style="font-weight: 600;">{{ user.name }}</div>
-                    <div style="font-size: 0.9rem; color: #4a5568;">{{ user.district }}</div>
+                    <div style="font-size: 0.9rem; color: rgba(255,255,255,0.9);">{{ user.district }}</div>
                 </div>
                 <div class="nav-links">
-                    <a href="/chat">💬 Chat</a>
                     <a href="/logout">🚪 Logout</a>
                 </div>
             </div>
@@ -342,15 +406,13 @@
                 </div>
             </div>
 
-            <div class="card">
-                <h3>💰 Market Prices</h3>
-                <div class="market-prices">
-                    {% for price in market_prices[:5] %}
-                    <div class="price-item">
-                        <div class="crop-name">{{ price.crop_name }}</div>
-                        <div class="price">₹{{ "%.2f"|format(price.price_per_kg) }}/{{ price.unit }}</div>
+            <div class="card weather-card">
+                <h3>🤖 Haritha AI</h3>
+                <div style="padding:12px; display:flex; flex-direction:column; gap:12px; align-items:center; justify-content:center;">
+                    <div style="color: rgba(255,255,255,0.95); text-align:center">Talk to Haritha — your farming assistant. Get quick tips, market insights, and personalized advice.</div>
+                    <div style="display:flex; gap:10px; justify-content:center; width:100%;">
+                        <a class="action-btn haritha-btn" href="/chat" style="margin:0 auto;">💬 Chat Now</a>
                     </div>
-                    {% endfor %}
                 </div>
             </div>
 
@@ -369,7 +431,7 @@
                     </div>
                     {% endfor %}
                     {% if not farm_data %}
-                    <div style="text-align: center; color: #4a5568; padding: 20px;">
+                    <div style="text-align: center; color: rgba(255,255,255,0.9); padding: 20px;">
                         No farm data yet. Start by adding your first crop!
                     </div>
                     {% endif %}
@@ -379,21 +441,58 @@
             <div class="card">
                 <h3>⚡ Quick Actions</h3>
                 <div class="quick-actions">
-                    <a href="/chat" class="action-btn">
-                        💬 Ask Haritha
-                    </a>
-                    <button class="action-btn" onclick="addFarmData()">
-                        📊 Add Farm Data
-                    </button>
-                    <button class="action-btn" onclick="getCropRecommendations()">
-                        🌱 Crop Advice
-                    </button>
-                    <button class="action-btn" onclick="calculateIrrigation()">
-                        💧 Irrigation Plan
-                    </button>
+                    <div class="mini-card">
+                        <div class="mini-title">🌱 Crop Recommendation</div>
+                        <form class="mini-form" onsubmit="event.preventDefault(); runCropRecommendation();">
+                            <input class="mini-input" id="rec_soil" placeholder="Soil type (e.g., loamy)" />
+                            <input class="mini-input" id="rec_season" placeholder="Season (e.g., Kharif)" />
+                            <input class="mini-input" id="rec_district" placeholder="District" />
+                            <button class="action-btn" type="submit">Get Recommendation</button>
+                            <div id="rec_result" class="result-box" style="display:none"></div>
+                        </form>
+                    </div>
+
+                    <div class="mini-card">
+                        <div class="mini-title">💧 Irrigation Plan</div>
+                        <form class="mini-form" onsubmit="event.preventDefault(); runIrrigationPlan();">
+                            <input class="mini-input" id="irr_crop" placeholder="Crop (e.g., rice)" />
+                            <input class="mini-input" id="irr_soilmoisture" placeholder="Soil moisture (%)" />
+                            <select id="irr_weather" class="mini-select">
+                                <option value="clear">Clear/Sunny</option>
+                                <option value="partly">Partly Cloudy</option>
+                                <option value="rain">Rain</option>
+                            </select>
+                            <button class="action-btn" type="submit">Calculate</button>
+                            <div id="irr_result" class="result-box" style="display:none"></div>
+                        </form>
+                    </div>
+
+                    <div class="mini-card">
+                        <div class="mini-title">📋 Add Farm Data</div>
+                        <form class="mini-form" onsubmit="event.preventDefault(); submitFarmData();">
+                            <input class="mini-input" id="add_crop" placeholder="Crop type" required />
+                            <input class="mini-input" id="add_area" placeholder="Area (acres)" required />
+                            <input class="mini-input" id="add_yield" placeholder="Yield (kg)" />
+                            <input class="mini-input" id="add_revenue" placeholder="Revenue (₹)" />
+                            <button class="action-btn" type="submit">Add Data</button>
+                            <div id="add_result" class="result-box" style="display:none"></div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
+            <div class="card">
+                <h3>💰 Market Prices</h3>
+                <div class="market-prices">
+                    {% for price in market_prices[:5] %}
+                    <div class="price-item">
+                        <div class="crop-name">{{ price.crop_name }}</div>
+                        <div class="price">₹{{ "%.2f"|format(price.price_per_kg) }}/{{ price.unit }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
 
         <div class="card">
             <h3>📈 Farm Performance</h3>
@@ -403,16 +502,21 @@
         </div>
     </div>
 
+    <!-- Embedded farm data for client-side scripts -->
+    <script id="farmDataJson" type="application/json">{{ farm_data|tojson }}</script>
+
     <script>
         // Farm performance chart
-        const ctx = document.getElementById('farmChart').getContext('2d');
-        const farmData = {{ farm_data|tojson }};
+    const ctx = document.getElementById('farmChart').getContext('2d');
+    // farm data embedded safely as JSON to avoid breaking static JS parsing
+    const farmDataScript = document.getElementById('farmDataJson');
+    const farmData = farmDataScript ? JSON.parse(farmDataScript.textContent || '[]') : [];
         
         const cropNames = farmData.map(farm => farm.crop_type);
         const revenues = farmData.map(farm => farm.revenue || 0);
         const yields = farmData.map(farm => farm.yield_kg || 0);
 
-        new Chart(ctx, {
+    const farmChartInstance = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: cropNames,
@@ -435,22 +539,41 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
+                    x: {
+                        ticks: { color: '#fff' },
+                    },
                     y: {
                         type: 'linear',
                         display: true,
                         position: 'left',
+                        ticks: { color: '#fff' }
                     },
                     y1: {
                         type: 'linear',
                         display: true,
                         position: 'right',
-                        grid: {
-                            drawOnChartArea: false,
-                        },
+                        grid: { drawOnChartArea: false },
+                        ticks: { color: '#fff' }
                     }
+                },
+                plugins: {
+                    legend: { labels: { color: '#fff' } }
                 }
             }
         });
+
+        // Helper to re-render chart when farmData changes
+        function updateChart(chart, data) {
+            const labels = data.map(f => f.crop_type || 'Unknown');
+            const rev = data.map(f => parseFloat(f.revenue || 0));
+            const yld = data.map(f => parseFloat(f.yield_kg || 0));
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = rev;
+            chart.data.datasets[1].data = yld;
+            chart.update();
+        }
+
+    // farmChartInstance is the Chart instance created above
 
         function addFarmData() {
             const cropType = prompt('Enter crop type:');
@@ -486,6 +609,64 @@
                     alert('Error adding farm data');
                 });
             }
+        }
+
+        // Mini-UI handlers
+        function showResult(id, text) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.display = 'block';
+            el.textContent = text;
+        }
+
+        function runCropRecommendation() {
+            const soil = document.getElementById('rec_soil').value.trim().toLowerCase();
+            const season = document.getElementById('rec_season').value.trim().toLowerCase();
+            const district = document.getElementById('rec_district').value.trim();
+
+            let crops = [];
+            if (season.includes('kharif') || season.includes('monsoon')) crops.push('Rice');
+            if (soil.includes('loam') || soil.includes('loamy')) crops.push('Vegetables');
+            if (district && district.toLowerCase().includes('idukki')) crops.push('Pepper');
+            if (!crops.length) crops = ['Rice', 'Banana', 'Coconut'];
+
+            showResult('rec_result', 'Recommended: ' + crops.join(', '));
+        }
+
+        function runIrrigationPlan() {
+            const crop = document.getElementById('irr_crop').value.trim().toLowerCase();
+            const sm = parseFloat(document.getElementById('irr_soilmoisture').value) || 0;
+            const weather = document.getElementById('irr_weather').value;
+
+            let recommendation = 'Follow normal schedule.';
+            if (weather === 'rain' || sm > 80) recommendation = 'Skip irrigation - sufficient moisture.';
+            else if (sm < 40) recommendation = 'Increase watering frequency.';
+            else if (crop.includes('rice')) recommendation = 'Daily light irrigation recommended.';
+
+            showResult('irr_result', 'Irrigation: ' + recommendation);
+        }
+
+        function submitFarmData() {
+            const crop = document.getElementById('add_crop').value.trim();
+            const area = parseFloat(document.getElementById('add_area').value) || 0;
+            const yld = parseFloat(document.getElementById('add_yield').value) || 0;
+            const rev = parseFloat(document.getElementById('add_revenue').value) || 0;
+
+            if (!crop || !area) { showResult('add_result', 'Please provide crop and area.'); return; }
+
+            const newEntry = { crop_type: crop, area_acres: area, yield_kg: yld, revenue: rev, planting_date: new Date().toISOString().split('T')[0] };
+            farmData.push(newEntry);
+            if (farmChartInstance) updateChart(farmChartInstance, farmData);
+            showResult('add_result', 'Farm data added locally. Attempting to save to server...');
+
+            fetch('/api/farm-data', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newEntry)
+            }).then(r => r.json()).then(j => {
+                showResult('add_result', j.message || 'Saved');
+            }).catch(() => {
+                showResult('add_result', 'Saved locally. Server unavailable.');
+            });
         }
 
         function getCropRecommendations() {

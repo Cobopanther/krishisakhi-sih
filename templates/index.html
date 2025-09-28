@@ -13,15 +13,16 @@
     }
 
     :root {
+      /* Greenish-white farming palette */
       --green-dark: #1e7f3e;
       --green: #2e9f4f;
-      --green-light: #6dcf7e;
+      --green-light: #8fd9a4;
       --earth: #8b6f47;
-      --bg: #f3f7f3;
-      --text: #1b1b1b;
-      --muted: #6b6b6b;
+      --bg: #f7fff7; /* very light green/white */
+      --text: #13321f; /* deep green text */
+      --muted: #58785f; /* muted green */
       --card: #ffffff;
-      --ring: rgba(46, 159, 79, 0.35);
+      --ring: rgba(46, 159, 79, 0.18);
     }
 
     body.dark {
@@ -34,7 +35,8 @@
 
     body {
       min-height: 100vh;
-      background: linear-gradient(145deg, rgba(30,127,62,0.2), rgba(141,111,71,0.15)), url('indx.jpg') center/cover no-repeat fixed;
+      /* soft greenish-white gradient with subtle texture image */
+      background: linear-gradient(140deg, var(--bg) 0%, #eaf8ee 50%, #ddf3e0 100%), url('indx.jpg') center/cover no-repeat fixed;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -57,7 +59,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 16px 20px;
-      background: linear-gradient(90deg, var(--green-dark), var(--green));
+      background: linear-gradient(90deg, rgba(30,127,62,0.95), rgba(46,159,79,0.92));
       color: #fff;
     }
 
@@ -102,13 +104,13 @@
     }
 
     .hero {
-      background: linear-gradient(180deg, rgba(46,159,79,0.12), rgba(30,127,62,0.12));
+      background: linear-gradient(180deg, rgba(46,159,79,0.06), rgba(46,159,79,0.03));
       padding: 28px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       gap: 14px;
-      border-right: 1px solid rgba(46,159,79,0.12);
+      border-right: 1px solid rgba(46,159,79,0.06);
     }
 
     .hero h1 {
@@ -148,9 +150,9 @@
     }
 
     .tab-btn.active {
-      background: linear-gradient(180deg, #fff, rgba(255,255,255,0.6));
-      border: 1px solid rgba(46,159,79,0.35);
-      box-shadow: 0 2px 8px rgba(46,159,79,0.12);
+      background: linear-gradient(180deg, #fff, rgba(239, 255, 245, 0.9));
+      border: 1px solid rgba(46,159,79,0.18);
+      box-shadow: 0 2px 8px rgba(46,159,79,0.06);
     }
 
     form {
@@ -200,6 +202,7 @@
       background: linear-gradient(90deg, var(--green-dark), var(--green));
       cursor: pointer;
       font-weight: 700;
+      box-shadow: 0 6px 18px rgba(46,159,79,0.08);
     }
 
     .alt {
